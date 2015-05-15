@@ -11,6 +11,7 @@ Instance variables:
 	-> horizontal: horizontal form
 - formTypes: array of possible form types
 - formFields: array of form fields
+- formButtons: array of form fields with type "button". Typically "Submit" and "Cancel" buttons.
 */
 
 class BootstrapForm
@@ -18,9 +19,14 @@ class BootstrapForm
 	protected $type;
 	protected $formTypes = array('basic', 'inline', 'horizontal');
 	protected $formFields = array();
+	protected $formButtons = array();
 	
 	public function __construct($newType = 'basic'){
 		$this->typeSet($newType);
+	}
+	
+	public function addButton($formButton){
+		$this->formButtons[] = $formButton;
 	}
 	
 	public function addField($formField){
