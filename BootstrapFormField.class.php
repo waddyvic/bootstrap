@@ -8,6 +8,16 @@ This class extends FormField class and adds Bootstrap 3 features.
 class BootstrapFormField extends FormField{
 	public $layout = 'stacked';		// Field layout used for radio or checkbox. Can be either stacked or inline.
 	
+	protected function viewAsButton(){
+		$str = "<button type='button' ";
+		$str .= ( !empty($this->class) ? "class='" . $this->class . "' " : "");
+		$str .= ( !empty($this->id) ? "id='" . $this->id . "' name='" . $this->id . "' " : "");
+		$str .= ( !empty($this->additionalAttr) ? $this->additionalAttr . " " : "");
+		$str .= ">" . $this->label . "</button>";
+		
+		return $str;
+	}
+	
 	protected function viewAsCheckbox(){
 		$str = '';
 		
@@ -130,8 +140,8 @@ class BootstrapFormField extends FormField{
 	
 	public function viewBasic(){
 		// For hidden input, just return the hidden field
-		if( $this->type == 'hidden' ){
-			return $this->viewAsHidden();
+		if( $this->type == 'hidden' || $this->type == 'button' ){
+			return $this->viewInput();
 		}
 		else{
 			$str = "<div class='form-group'>";
@@ -151,8 +161,8 @@ class BootstrapFormField extends FormField{
 	
 	public function viewHorizontal(){
 		// For hidden input, just return the hidden field
-		if( $this->type == 'hidden' ){
-			return $this->viewAsHidden();
+		if( $this->type == 'hidden' || $this->type == 'button'  ){
+			return $this->viewInput();
 		}
 		else{
 			$str = '';
@@ -163,8 +173,8 @@ class BootstrapFormField extends FormField{
 	
 	public function viewInline(){
 		// For hidden input, just return the hidden field
-		if( $this->type == 'hidden' ){
-			return $this->viewAsHidden();
+		if( $this->type == 'hidden' || $this->type == 'button'  ){
+			return $this->viewInput();
 		}
 		else{
 			$str = "<div class='form-group'>";
@@ -201,12 +211,17 @@ class BootstrapFormField extends FormField{
 			}
 		
 			switch($this->type){
+				case 'button':
+					$str .= $this->viewAsButton() . " ";
+					break;
+					
 				case 'checkbox':
 					$str .= $this->viewAsCheckbox();
 					break;
 				
 				case 'hidden':
-					$str .= $this->viewHidden();
+					$str .= $this->viewAsHidden();
+					break;
 				
 				case 'password':
 					$str .= $this->viewAsPassword();

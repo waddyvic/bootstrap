@@ -5,7 +5,7 @@ require_once(__DIR__ . '/FormFieldOption.class.php');
 This class acts as data store for form field. Instance variables are:
 - id: the HTML id of the field
 - label: the label of the field
-- type: the input type supported by HTML 5
+- type: the input type supported by HTML 5, and "button" for form buttons.
 - value: the value of the field
 - options: array of FormFieldOption objects for select, radio and checkbox.
 - class: the class attribute of the field
