@@ -38,12 +38,6 @@ class BootstrapForm
 	
 	public function __construct($newType = 'basic'){
 		$this->typeSet($newType);
-		
-		// Initialize label and field column grid config if form is horizontal.
-		if( $newType == 'horizontal' ){
-			$this->labelColConfig = new BootstrapGridConfig('sm', 2);
-			$this->fieldColConfig = new BootstrapGridConfig('sm', 10);
-		}
 	}
 	
 	public function addButton($button){
@@ -82,6 +76,12 @@ class BootstrapForm
 		// Ensure supplied form type is valid
 		if( in_array($newType, $this->formTypes) ){
 			$this->type = $newType;
+			
+			// Initialize label and field column grid config if form is horizontal.
+			if( $newType == 'horizontal' ){
+				$this->labelColConfig = new BootstrapGridConfig('sm', 2);
+				$this->fieldColConfig = new BootstrapGridConfig('sm', 10);
+			}
 		}
 	}
 	
