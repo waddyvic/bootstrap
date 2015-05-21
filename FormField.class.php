@@ -24,7 +24,6 @@ class FormField{
 	public $id;
 	public $label;
 	public $placeholder;
-	public $type;
 	public $value;
 	public $options = array();
 	public $class;
@@ -37,10 +36,10 @@ class FormField{
 	public $srcCode;
 	protected $children = array();
 	
-	public function __construct($id = null, $type = null, $label = null, $value = null){
+	public function __construct($id = null, $label = null, $value = null){
 		$this->id = $id;
 		$this->label = $label;
-		$this->type = $type;
+		$this->placeholder = $label;
 		$this->value = $value;
 	}
 	
@@ -56,5 +55,17 @@ class FormField{
 	*/
 	public function addOption($label, $value, $isSelected = false){
 		$this->options[] = new FormFieldOption($label, $value, $isSelected);
+	}
+	
+	/*
+	Child class must implement this function to return HTML of field.
+	*/
+	public function view(){
+		if( $this->useSrcCode ){
+			return $this->srcCode;
+		}
+		else{
+			return null;
+		}
 	}
 }

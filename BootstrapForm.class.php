@@ -1,6 +1,13 @@
 <?php
 namespace ui;
-require_once('FormField.class.php');
+require_once('BootstrapFormFieldButton.class.php');
+require_once('BootstrapFormFieldCheckbox.class.php');
+require_once('BootstrapFormFieldHidden.class.php');
+require_once('BootstrapFormFieldPassword.class.php');
+require_once('BootstrapFormFieldRadio.class.php');
+require_once('BootstrapFormFieldStatic.class.php');
+require_once('BootstrapFormFieldText.class.php');
+require_once('BootstrapFormFieldTextArea.class.php');
 /*
 This class creates an array of form fields and generate HTML form using Bootstrap 3.
 
@@ -34,7 +41,7 @@ class BootstrapForm
 	}
 	
 	public function typeGet(){
-	
+		return $this->type;
 	}
 	
 	public function typeSet($newType){
@@ -59,7 +66,7 @@ class BootstrapForm
 					break;
 				
 				case 'inline':
-					$str .= $f->viewInline();
+					$str .= $f->viewInline() . ' ';
 					break;
 				
 				case 'horizontal':
