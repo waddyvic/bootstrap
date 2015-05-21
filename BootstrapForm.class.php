@@ -1,5 +1,6 @@
 <?php
 namespace ui;
+require_once('BootstrapGridConfig.class.php');
 require_once('BootstrapFormFieldButton.class.php');
 require_once('BootstrapFormFieldCheckbox.class.php');
 require_once('BootstrapFormFieldHidden.class.php');

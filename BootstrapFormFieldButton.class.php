@@ -26,9 +26,23 @@ class BootstrapFormFieldButton extends BootstrapFormField{
 	/*
 	Override BootstrapFormField::viewHorizontal() function
 	*/
-	public function viewHorizontal(){
+	public function viewHorizontal($labelColConfig = null, $fieldColConfig = null ){
+		// Set default grid size if not provided
+		if( is_null($labelColConfig) ){
+			$labelColConfig = new BootstrapGridConfig('sm', 2);
+		}
+		if( is_null($fieldColConfig) ){
+			$fieldColConfig = new BootstrapGridConfig('sm', 10);
+		}
+		
+		// Use lalel column grid size config to determine field column config
+		foreach($labelColConfig->getAllItemObjs() as $i){
+			$i->isOffset = true;
+			$fieldColConfig->addItemObj($i);
+		}
+		
 		$str = "<div class='form-group'>
-			<div class='col-sm-offset-2 col-sm-10'>" . $this->view() . "</div>
+			<div class='" . $fieldColConfig->toString() . "'>" . $this->view() . "</div>
 		</div>";
 		
 		return $str;

@@ -27,7 +27,7 @@ class BootstrapFormFieldHidden extends BootstrapFormField{
 	/*
 	Override BootstrapFormField::viewHorizontal() function
 	*/
-	public function viewHorizontal(){
+	public function viewHorizontal($labelColConfig = null, $fieldColConfig = null){
 		return $this->view();
 	}
 	
