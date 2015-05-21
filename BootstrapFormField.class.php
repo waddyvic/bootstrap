@@ -7,11 +7,32 @@ This class extends FormField class and adds Bootstrap 3 features. This will act 
 */
 
 class BootstrapFormField extends FormField{
+	public $addonPre;
+	public $addonPost;
 	
 	public function viewBasic(){
+		$inputStr = $this->view();
+		
+		// Add addon to input if exists
+		if( !empty($this->addonPre) || !empty($this->addonPost) ){
+			$inputStr = "<div class='input-group'>";
+			
+			if( !empty($this->addonPre) ){
+				$inputStr .= "<div class='input-group-addon'>" . $this->addonPre . "</div>";
+			}
+			
+			$inputStr .= $this->view();
+			
+			if( !empty($this->addonPost) ){
+				$inputStr .= "<div class='input-group-addon'>" . $this->addonPost . "</div>";
+			}
+			
+			$inputStr .= "</div>";
+		}
+		
 		$str = "<div class='form-group'>
 			<label for='" . $this->id . "'>" . $this->label . "</label>
-			" . $this->view() . "
+			$inputStr
 		</div>";
 		
 		return $str;
@@ -30,18 +51,56 @@ class BootstrapFormField extends FormField{
 			$fieldColConfig = new BootstrapGridConfig('sm', 10);
 		}
 		
+		$inputStr = $this->view();
+		
+		// Add addon to input if exists
+		if( !empty($this->addonPre) || !empty($this->addonPost) ){
+			$inputStr = "<div class='input-group'>";
+			
+			if( !empty($this->addonPre) ){
+				$inputStr .= "<div class='input-group-addon'>" . $this->addonPre . "</div>";
+			}
+			
+			$inputStr .= $this->view();
+			
+			if( !empty($this->addonPost) ){
+				$inputStr .= "<div class='input-group-addon'>" . $this->addonPost . "</div>";
+			}
+			
+			$inputStr .= "</div>";
+		}
+		
 		$str = "<div class='form-group'>
 			<label for'" . $this->id . "' class='" . $labelColConfig->toString() . " control-label'>" . $this->label . "</label>
-			<div class='" . $fieldColConfig->toString() . "'>" . $this->view() . "</div>
+			<div class='" . $fieldColConfig->toString() . "'>$inputStr</div>
 		</div>";
 		
 		return $str;
 	}
 	
 	public function viewInline($isShowLabel = false){
+		$inputStr = $this->view();
+		
+		// Add addon to input if exists
+		if( !empty($this->addonPre) || !empty($this->addonPost) ){
+			$inputStr = "<div class='input-group'>";
+			
+			if( !empty($this->addonPre) ){
+				$inputStr .= "<div class='input-group-addon'>" . $this->addonPre . "</div>";
+			}
+			
+			$inputStr .= $this->view();
+			
+			if( !empty($this->addonPost) ){
+				$inputStr .= "<div class='input-group-addon'>" . $this->addonPost . "</div>";
+			}
+			
+			$inputStr .= "</div>";
+		}
+		
 		$str = "<div class='form-group'>
 			<label class='sr-only' for='" . $this->id . "'>" . $this->label . "</label>
-			" . $this->view() . "
+			$inputStr
 		</div>";
 		
 		return $str;

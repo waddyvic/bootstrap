@@ -51,16 +51,24 @@ require_once(__DIR__ . "/BootstrapForm.class.php");
 			$form->rowStart();
 			
 			// weight
-			$form->addField( new \ui\BootstrapFormFieldText('txtWeight', 'Weight'), $gridConfig );
+			$weightField = new \ui\BootstrapFormFieldText('txtWeight', 'Weight');
+			$weightField->addonPost = 'g';
+			$form->addField($weightField , $gridConfig );
 			
 			// width
-			$form->addField( new \ui\BootstrapFormFieldText('txtWidth', 'Width'), $gridConfig );
+			$widthField = new \ui\BootstrapFormFieldText('txtWidth', 'Width');
+			$widthField->addonPost = 'cm';
+			$form->addField( $widthField, $gridConfig );
 			
 			// height
-			$form->addField( new \ui\BootstrapFormFieldText('txtHeight', 'Height'), $gridConfig );
+			$heightField = new \ui\BootstrapFormFieldText('txtHeight', 'Height');
+			$heightField->addonPost = 'cm';
+			$form->addField( $heightField, $gridConfig );
 			
 			// length
-			$form->addField( new \ui\BootstrapFormFieldText('txtLength', 'Length') , $gridConfig);
+			$lengthField = new \ui\BootstrapFormFieldText('txtLength', 'Length');
+			$lengthField->addonPost = 'cm';
+			$form->addField( $lengthField, $gridConfig);
 			
 			$form->rowEnd();
 			

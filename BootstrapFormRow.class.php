@@ -53,7 +53,7 @@ class BootstrapFormRow{
 		$str = '';
 		
 		foreach($this->items as $i){
-			$str .= $i->field->viewInline();
+			$str .= $i->field->viewInline() . "\n";
 		}
 		
 		return $str;
