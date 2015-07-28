@@ -91,7 +91,7 @@ class BootstrapForm
 			$formClass = "class='form-" . $this->type . "'";
 		}
 		
-		$str = "<form $formClass>";
+		$str = "<form $formClass id='boostrapForm'>";
 		
 		foreach($this->rows as $r){
 			switch($this->type){
