@@ -1,6 +1,7 @@
 <?php
 namespace ui;
 require_once(__DIR__ . "/TableRow.class.php");
+require_once(__DIR__ . "/BootstrapTableCell.class.php");
 
 class BootstrapTableRow extends TableRow{
 	const ACTIVE = 'active';

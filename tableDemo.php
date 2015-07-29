@@ -183,7 +183,7 @@ print $bsTable->view();
 With contextual rows
 */
 $bsTable = new BootstrapTable('tblBs4', 'demoClass');
-$bsTable->caption = "Bootstrap Table With Contextual Row";
+$bsTable->caption = "Bootstrap Table With Contextual Rows/Cells";
 
 // First, add some header cell
 $bsTable->newHeaderCell('Header 1');
@@ -203,16 +203,23 @@ $contextValue = array(
 	BootstrapTableRow::WARNING
 );
 
-// 6 rows
+// contextual rows
 for($i = 1; $i <= 6; $i++){
-	// 4 cells
-	for($j = 1; $j <= 4; $j++){
+	// 6 cells
+	for($j = 1; $j <= 6; $j++){
 		$bsTable->newCell("data $i $j");
 	}
 	
 	// each row use a different context;
 	$bsTable->saveRow( $contextValue[$i-1] );
 }
+
+// contextual cells
+// contextual rows
+for($i = 1; $i <= 6; $i++){
+	$bsTable->newCell("data $i $j", BootstrapTableCell::TD, $contextValue[$i-1]);
+}
+$bsTable->saveRow();
 
 print $bsTable->view();
 ?>
