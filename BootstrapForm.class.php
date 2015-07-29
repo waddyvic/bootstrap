@@ -28,6 +28,7 @@ Instance variables:
 
 class BootstrapForm
 {
+	protected $id;
 	protected $type;
 	protected $formTypes = array('basic', 'inline', 'horizontal');
 	protected $rows = array();
@@ -36,8 +37,9 @@ class BootstrapForm
 	public $labelColConfig = null;
 	public $fieldColConfig = null;
 	
-	public function __construct($newType = 'basic'){
+	public function __construct($newType = 'basic', $newId){
 		$this->typeSet($newType);
+		$this->idSet($newId);
 	}
 	
 	public function addButton($button){
@@ -57,6 +59,14 @@ class BootstrapForm
 			$lastRowIndex = count($this->rows) - 1;
 			$this->rows[$lastRowIndex]->addItem($newItem);
 		}
+	}
+	
+	public function idSet($newId){
+		$this->id = $newId;
+	}
+	
+	public function idGet(){
+		return $this->id;
 	}
 	
 	public function rowStart(){
@@ -90,8 +100,12 @@ class BootstrapForm
 		if( $this->type != 'basic' ){
 			$formClass = "class='form-" . $this->type . "'";
 		}
+		$formId = '';
+		if( !empty($this->id) ){
+			$formId = "id='" . $this->id . "'";
+		}
 		
-		$str = "<form $formClass id='boostrapForm'>";
+		$str = "<form $formClass $formId>";
 		
 		foreach($this->rows as $r){
 			switch($this->type){
