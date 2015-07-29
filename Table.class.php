@@ -14,7 +14,7 @@ class Table{
 	public function __construct($id = null, $class = null){
 		$this->id = $id;
 		$this->classAdd($class);
-		$this->currRow = new TableRow();
+		$this->resetCurrRow();
 	}
 	
 	public function classAdd($class){
@@ -42,13 +42,17 @@ class Table{
 		$this->currRow->cellAdd($cell);
 	}
 	
+	public function resetCurrRow(){
+		$this->currRow = new TableRow();
+	}
+	
 	// Put current row into table header and start a new row
 	public function saveHeaderRow(){
 		if( !$this->currRow->isEmpty() ){
 			$this->header[] = $this->currRow;
 		}
 		
-		$this->currRow = new TableRow();
+		$this->resetCurrRow();
 	}
 	
 	// Put current row into table footer and start a new row
@@ -57,7 +61,7 @@ class Table{
 			$this->footer[] = $this->currRow;
 		}
 		
-		$this->currRow = new TableRow();
+		$this->resetCurrRow();
 	}
 	
 	// Put current row into table body and start a new row
@@ -66,7 +70,7 @@ class Table{
 			$this->body[] = $this->currRow;
 		}
 		
-		$this->currRow = new TableRow();
+		$this->resetCurrRow();
 	}
 	
 	public function view(){
