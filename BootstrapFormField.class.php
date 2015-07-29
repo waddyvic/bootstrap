@@ -81,6 +81,12 @@ class BootstrapFormField extends FormField{
 	public function viewInline($isShowLabel = false){
 		$inputStr = $this->view();
 		
+		// Make label screen reader only if not showing label
+		$labelClass = '';
+		if( !$isShowLabel ){
+			$labelClass = 'sr-only';
+		}
+		
 		// Add addon to input if exists
 		if( !empty($this->addonPre) || !empty($this->addonPost) ){
 			$inputStr = "<div class='input-group'>";
@@ -99,7 +105,7 @@ class BootstrapFormField extends FormField{
 		}
 		
 		$str = "<div class='form-group'>
-			<label class='sr-only' for='" . $this->id . "'>" . $this->label . "</label>
+			<label class='$labelClass' for='" . $this->id . "'>" . $this->label . "</label>
 			$inputStr
 		</div>";
 		

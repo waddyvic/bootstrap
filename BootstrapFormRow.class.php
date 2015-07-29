@@ -49,11 +49,11 @@ class BootstrapFormRow{
 		return $str;
 	}
 	
-	public function viewInline(){
+	public function viewInline($isShowLabel = false){
 		$str = '';
 		
 		foreach($this->items as $i){
-			$str .= $i->field->viewInline() . "\n";
+			$str .= $i->field->viewInline($isShowLabel) . "\n";
 		}
 		
 		return $str;

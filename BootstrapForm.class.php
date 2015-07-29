@@ -34,6 +34,7 @@ class BootstrapForm
 	protected $rows = array();
 	protected $buttons = array();
 	protected $isNewRow = true;
+	protected $isShowLabel = false;
 	public $labelColConfig = null;
 	public $fieldColConfig = null;
 	
@@ -67,6 +68,14 @@ class BootstrapForm
 	
 	public function idGet(){
 		return $this->id;
+	}
+	
+	public function labelShow(){
+		$this->isShowLabel = true;
+	}
+	
+	public function labelHide(){
+		$this->isShowLabel = false;
 	}
 	
 	public function rowStart(){
@@ -114,7 +123,7 @@ class BootstrapForm
 					break;
 				
 				case 'inline':
-					$str .= $r->viewInline() . ' ';
+					$str .= $r->viewInline($this->isShowLabel) . ' ';
 					break;
 				
 				case 'horizontal':
