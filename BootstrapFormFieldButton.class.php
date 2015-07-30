@@ -6,8 +6,10 @@ This class extends BootstrapFormField class to implement view() function for but
 */
 
 class BootstrapFormFieldButton extends BootstrapFormField{
+	public $type = 'button';
+	
 	public function view(){
-		$str = "<button type='button' ";
+		$str = "<button type='" . $this->type . "' ";
 		$str .= ( !empty($this->class) ? "class='" . $this->class . "' " : "");
 		$str .= ( !empty($this->id) ? "id='" . $this->id . "' name='" . $this->id . "' " : "");
 		$str .= ( !empty($this->additionalAttr) ? $this->additionalAttr . " " : "");

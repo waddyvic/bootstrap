@@ -28,6 +28,10 @@ Instance variables:
 
 class BootstrapForm
 {
+	const POST = 'POST';
+	const GET = 'GET';
+	protected static $allowedMethods = array(self::POST, self::GET);
+	
 	protected $id;
 	protected $type;
 	protected $formTypes = array('basic', 'inline', 'horizontal');
@@ -35,12 +39,22 @@ class BootstrapForm
 	protected $buttons = array();
 	protected $isNewRow = true;
 	protected $isShowLabel = false;
+	protected $method = self::POST;
+	protected $action = null;
 	public $labelColConfig = null;
 	public $fieldColConfig = null;
 	
 	public function __construct($newType = 'basic', $newId){
 		$this->typeSet($newType);
 		$this->idSet($newId);
+	}
+	
+	public function actionSet($action){
+		$this->action = $action;
+	}
+	
+	public function actionGet(){
+		return $this->action;
 	}
 	
 	public function addButton($button){
@@ -76,6 +90,18 @@ class BootstrapForm
 	
 	public function labelHide(){
 		$this->isShowLabel = false;
+	}
+	
+	public function methodGet(){
+		return $this->method;
+	}
+	
+	public function methodSet($method){
+		if( !in_array($method, self::$allowedMethod) ){
+			throw new \Exception("invalid method $method");
+		}
+		
+		$this->method = $method;
 	}
 	
 	public function rowStart(){
