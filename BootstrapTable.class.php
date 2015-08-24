@@ -11,8 +11,8 @@ class BootstrapTable extends Table{
 	public $isResponsive = false;
 	
 	
-	public function __construct($id = null, $class = null){
-		parent::__construct($id, $class);
+	public function __construct($id = null, $class = null, $style = null){
+		parent::__construct($id, $class, $style);
 		$this->classAdd('table');
 	}
 	

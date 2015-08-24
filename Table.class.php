@@ -5,15 +5,18 @@ require_once(__DIR__ . "/TableRow.class.php");
 class Table{
 	public $id = null;
 	protected $classes = array();
+	protected $styles = array();
+	protected $border = false;
 	public $caption = null;
 	protected $currRow = null;		// Current table row; will be used for header, body, and footer
 	protected $header = array();	// Array of table rows for header
 	protected $body = array();
 	protected $footer = array();
 	
-	public function __construct($id = null, $class = null){
+	public function __construct($id = null, $class = null, $style = null){
 		$this->id = $id;
 		$this->classAdd($class);
+		$this->styleAdd($style);
 		$this->resetCurrRow();
 	}
 	
@@ -22,6 +25,17 @@ class Table{
 		if( !empty($class) ){
 			$this->classes[] = $class;
 		}
+	}
+	
+	public function styleAdd($style){
+		// Do not add class if parameter is empty.
+		if( !empty($style) ){
+			$this->styles[] = $style;
+		}
+	}
+	
+	public function borderSet($bool = false){
+		$this->border = $bool;
 	}
 	
 	public function newCell($cellData, $id = null, $class = null){
@@ -82,6 +96,12 @@ class Table{
 		}
 		if( !empty($this->classes) ){
 			$str .= " class='" . implode(' ', $this->classes) . "'";
+		}
+		if( !empty($this->styles) ){
+			$str .= " style='" . implode('; ', $this->styles) . "'";
+		}
+		if( $this->border ){
+			$str .= " border=1";
 		}
 		$str .= ">" . PHP_EOL;
 		

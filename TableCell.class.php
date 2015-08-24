@@ -4,6 +4,7 @@ namespace ui;
 class TableCell{
 	const TH = 'th';
 	const TD = 'td';
+	const NORMAL = null;
 	public $cellData = null;
 	public $type = self::TD;
 	public $id = null;
