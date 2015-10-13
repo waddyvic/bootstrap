@@ -1,6 +1,8 @@
 <?php
 require_once(__DIR__ . "/../../global.php");
 require_once(__DIR__ . "/BootstrapForm.class.php");
+ini_set('display_errors', 'On');
+error_reporting(E_ALL);
 ?>
 <!DOCTYPE html>
 <html>

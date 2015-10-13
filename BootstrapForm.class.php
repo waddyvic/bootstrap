@@ -44,7 +44,7 @@ class BootstrapForm
 	public $labelColConfig = null;
 	public $fieldColConfig = null;
 	
-	public function __construct($newType = 'basic', $newId){
+	public function __construct($newType = 'basic', $newId = null){
 		$this->typeSet($newType);
 		$this->idSet($newId);
 	}
