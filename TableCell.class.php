@@ -11,6 +11,7 @@ class TableCell{
 	protected $classes = array();
 	public $rowSpan = null;
 	public $colSpan = null;
+	public $additionalAttr = null;
 	
 	public function __construct($cellData, $type = self::TD, $id = null, $class = null){
 		$this->cellData = $cellData;
@@ -49,6 +50,9 @@ class TableCell{
 		}
 		if( !is_null($this->colSpan) ){
 			$str .= " colspan='" . $this->colSpan . "'";
+		}
+		if( !is_null($this->additionalAttr) ){
+			$str .= " $this->additionalAttr";
 		}
 		$str .= ">";
 		
