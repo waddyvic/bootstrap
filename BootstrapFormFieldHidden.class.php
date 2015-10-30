@@ -8,7 +8,7 @@ This class extends BootstrapFormField class to implement view() function for hid
 class BootstrapFormFieldHidden extends BootstrapFormField{
 	public function view(){
 		$str = "<input type='hidden' ";
-		$str .= ( !empty($this->class) ? "class='" . $this->class . "' " : "");
+		$str .= ( !empty($this->class) ? "class='" . implode(' ', $this->class) . "' " : "");
 		$str .= ( !empty($this->id) ? "id='" . $this->id . "' name='" . $this->id . "' " : "");
 		$str .= ( !empty($this->value) ? "value='" . $this->value . "' " : "");
 		$str .= ( !empty($this->additionalAttr) ? $this->additionalAttr . " " : "");

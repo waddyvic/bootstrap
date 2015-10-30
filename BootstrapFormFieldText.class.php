@@ -7,14 +7,14 @@ This class extends BootstrapFormField class to implement view() function for tex
 
 class BootstrapFormFieldText extends BootstrapFormField{
 	public function __construct($id = null, $label = null, $value = null){
-		$this->class = 'form-control';
+		$this->addClass('form-control');
 		
 		parent::__construct($id, $label, $value);
 	}
 	
 	public function view(){
 		$str = "<input type='text' ";
-		$str .= ( !empty($this->class) ? "class='" . $this->class . "' " : "");
+		$str .= ( !empty($this->class) ? "class='" . implode(' ', $this->class) . "' " : "");
 		$str .= ( !empty($this->id) ? "id='" . $this->id . "' name='" . $this->id . "' " : "");
 		$str .= ( !empty($this->value) ? "value='" . $this->value . "' " : "");
 		$str .= ( !empty($this->placeholder) ? "placeholder='" . $this->label . "' " : "");

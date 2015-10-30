@@ -26,7 +26,7 @@ class FormField{
 	public $placeholder;
 	public $value;
 	public $options = array();
-	public $class;
+	public $class = array();
 	public $style;
 	public $additionalAttr;
 	public $isOptional = false;
@@ -48,6 +48,13 @@ class FormField{
 	*/
 	public function addChild($formField){
 		$this->children[] = $formField;
+	}
+	
+	/*
+	This function adds class to form field
+	*/
+	public function addClass($newClass){
+		$this->class[] = $newClass;
 	}
 	
 	/*

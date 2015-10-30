@@ -22,14 +22,14 @@ class BootstrapFormFieldRadio extends BootstrapFormField{
 			$inputStr .= "/> " . $o->label;
 			
 			if( $this->layout == 'stacked' ){
-				$str .= "<div class='radio'>
+				$str .= "<div class='radio" . ( !empty($this->class) ? ' ' . implode(' ', $this->class) : '' ) . "'>
 					<label>
 						$inputStr
 					</label>
 				</div>";
 			}
 			else if( $this->layout == 'inline' ){
-				$str .= "<label class='radio-inline'>$inputStr</label>\n";
+				$str .= "<label class='radio-inline" . ( !empty($this->class) ? ' ' . implode(' ', $this->class) : '' ) . "'>$inputStr</label>\n";
 			}
 			else{
 				$str .= $inputStr . ' ';

@@ -10,7 +10,7 @@ class BootstrapFormFieldButton extends BootstrapFormField{
 	
 	public function view(){
 		$str = "<button type='" . $this->type . "' ";
-		$str .= ( !empty($this->class) ? "class='" . $this->class . "' " : "");
+		$str .= ( !empty($this->class) ? "class='" . implode(' ', $this->class) . "' " : "");
 		$str .= ( !empty($this->id) ? "id='" . $this->id . "' name='" . $this->id . "' " : "");
 		$str .= ( !empty($this->additionalAttr) ? $this->additionalAttr . " " : "");
 		$str .= ">" . $this->label . "</button>";

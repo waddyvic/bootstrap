@@ -20,12 +20,12 @@ class BootstrapFormFieldCheckbox extends BootstrapFormField{
 		$inputStr .= "/> " . $this->label;
 		
 		if( empty($this->layout) || $this->layout == 'stacked' ){
-			$str .= "<div class='checkbox'>
+			$str .= "<div class='checkbox" . ( !empty($this->class) ? ' ' . implode(' ', $this->class) : '' ) . "'>
 				<label>" . $inputStr . "</label>
 			</div>";
 		}
 		else if( $this->layout == 'inline' ){
-			$str .= "<label class='checkbox-inline'>" . $inputStr . "</label>\n";
+			$str .= "<label class='checkbox-inline" . ( !empty($this->class) ? ' ' . implode(' ', $this->class) : '' ) . "'>" . $inputStr . "</label>\n";
 		}
 		else{
 			$str .= $inputStr;
