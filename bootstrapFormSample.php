@@ -79,10 +79,10 @@ error_reporting(E_ALL);
 			
 			// Form buttons
 			$btnSave = new \ui\BootstrapFormFieldButton('btnSave', 'Save');
-			$btnSave->class = 'btn btn-primary';
+			$btnSave->addClass('btn btn-primary');
 			$form->addButton( $btnSave );
 			$btnCancel = new \ui\BootstrapFormFieldButton('btnCancel', 'Cancel');
-			$btnCancel->class = 'btn btn-default';
+			$btnCancel->addClass('btn btn-default');
 			$form->addButton( $btnCancel );
 			?>
 			
