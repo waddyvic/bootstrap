@@ -4,6 +4,7 @@ require_once('BootstrapGridConfig.class.php');
 require_once('BootstrapFormFieldButton.class.php');
 require_once('BootstrapFormFieldCheckbox.class.php');
 require_once('BootstrapFormFieldHidden.class.php');
+require_once('BootstrapFormFieldNumber.class.php');
 require_once('BootstrapFormFieldPassword.class.php');
 require_once('BootstrapFormFieldRadio.class.php');
 require_once('BootstrapFormFieldStatic.class.php');
