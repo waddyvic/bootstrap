@@ -7,30 +7,75 @@ This class extends FormField class and adds Bootstrap 3 features. This will act 
 */
 
 class BootstrapFormField extends FormField{
+	const VALIDATION_STATE_NONE = null;
+	const VALIDATION_STATE_SUCCESS = 'success';
+	const VALIDATION_STATE_WARNING = 'warning';
+	const VALIDATION_STATE_ERROR = 'error';
+	
 	public $addonPre;
 	public $addonPost;
+	protected $validationState;
+	public $isShowFeedback = false;
+	
+	protected function feedbackStrGet(){
+		$feedbackStr = "<span class='glyphicon glyphicon-ok form-control-feedback' aria-hidden='true'></span>
+		<span class='glyphicon glyphicon-warning-sign form-control-feedback' aria-hidden='true'></span>
+		<span class='glyphicon glyphicon-remove form-control-feedback' aria-hidden='true'></span>";
+		
+		return $feedbackStr;
+	}
+	
+	public function validationStateSet($validationState = self::VALIDATION_STATE_NONE, $isShowFeedback = false){
+		// Ensure input is correct
+		$allowedValue = array(self::VALIDATION_STATE_SUCCESS, self::VALIDATION_STATE_WARNING, self::VALIDATION_STATE_ERROR);
+		
+		if( $validationState != self::VALIDATION_STATE_NONE && !in_array($validationState, $allowedValue) ){
+			throw new \Exception("invalid input: $validationState");
+		}
+		
+		$this->validationState = $validationState;
+		$this->isShowFeedback = ( $isShowFeedback == true );
+	}
 	
 	public function viewBasic(){
 		$inputStr = $this->view();
+		$formGroupClass = 'form-group';
+		if( $this->validationState != self::VALIDATION_STATE_NONE ){
+			$formGroupClass .= " has-" . $this->validationState;
+			
+			if( $this->isShowFeedback ){
+				$formGroupClass .= " has-feedback";
+				$inputStr .= $this->feedbackStrGet();
+			}
+		}
 		
 		// Add addon to input if exists
 		if( !empty($this->addonPre) || !empty($this->addonPost) ){
-			$inputStr = "<div class='input-group'>";
+			$preInputStr = "<div class='input-group'>";
+			$postInputStr = '';
 			
 			if( !empty($this->addonPre) ){
-				$inputStr .= "<div class='input-group-addon'>" . $this->addonPre . "</div>";
+				$preInputStr .= "<div class='input-group-addon'>" . $this->addonPre . "</div>";
 			}
-			
-			$inputStr .= $this->view();
 			
 			if( !empty($this->addonPost) ){
-				$inputStr .= "<div class='input-group-addon'>" . $this->addonPost . "</div>";
+				/*
+					In order to make feedback icon show up correctly when there is addon post, we need to wrap the input and the icon together with a relative position div.
+				*/
+				if( $this->isShowFeedback){
+					$preInputStr .= "<div style='position:relative;'>";
+					$postInputStr .= "</div>";
+				}
+				
+				$postInputStr .= "<div class='input-group-addon'>" . $this->addonPost . "</div>";
 			}
 			
-			$inputStr .= "</div>";
+			$postInputStr .= "</div>";
+			
+			$inputStr = $preInputStr . $inputStr . $postInputStr;
 		}
 		
-		$str = "<div class='form-group'>
+		$str = "<div class='$formGroupClass'>
 			<label for='" . $this->id . "'>" . $this->label . "</label>
 			$inputStr
 		</div>";
@@ -52,25 +97,43 @@ class BootstrapFormField extends FormField{
 		}
 		
 		$inputStr = $this->view();
+		$formGroupClass = 'form-group';
+		if( $this->validationState != self::VALIDATION_STATE_NONE ){
+			$formGroupClass .= " has-" . $this->validationState;
+			
+			if( $this->isShowFeedback ){
+				$formGroupClass .= " has-feedback";
+				$inputStr .= $this->feedbackStrGet();
+			}
+		}
 		
 		// Add addon to input if exists
 		if( !empty($this->addonPre) || !empty($this->addonPost) ){
-			$inputStr = "<div class='input-group'>";
+			$preInputStr = "<div class='input-group'>";
+			$postInputStr = '';
 			
 			if( !empty($this->addonPre) ){
-				$inputStr .= "<div class='input-group-addon'>" . $this->addonPre . "</div>";
+				$preInputStr .= "<div class='input-group-addon'>" . $this->addonPre . "</div>";
 			}
-			
-			$inputStr .= $this->view();
 			
 			if( !empty($this->addonPost) ){
-				$inputStr .= "<div class='input-group-addon'>" . $this->addonPost . "</div>";
+				if( $this->isShowFeedback ){
+					/*
+						In order to make feedback icon show up correctly when there is addon post, we need to wrap the input and the icon together with a relative position div.
+					*/
+					$preInputStr .= "<div style='position:relative;'>";
+					$postInputStr .= "</div>";
+				}
+				
+				$postInputStr .= "<div class='input-group-addon'>" . $this->addonPost . "</div>";
 			}
 			
-			$inputStr .= "</div>";
+			$postInputStr .= "</div>";
+			
+			$inputStr = $preInputStr . $inputStr . $postInputStr;
 		}
 		
-		$str = "<div class='form-group'>
+		$str = "<div class='$formGroupClass'>
 			<label for'" . $this->id . "' class='" . $labelColConfig->toString() . " control-label'>" . $this->label . "</label>
 			<div class='" . $fieldColConfig->toString() . "'>$inputStr</div>
 		</div>";
@@ -80,6 +143,15 @@ class BootstrapFormField extends FormField{
 	
 	public function viewInline($isShowLabel = false){
 		$inputStr = $this->view();
+		$formGroupClass = 'form-group';
+		if( $this->validationState != self::VALIDATION_STATE_NONE ){
+			$formGroupClass .= " has-" . $this->validationState;
+			
+			if( $this->isShowFeedback ){
+				$formGroupClass .= " has-feedback";
+				$inputStr .= $this->feedbackStrGet();
+			}
+		}
 		
 		// Make label screen reader only if not showing label
 		$labelClass = '';
@@ -89,22 +161,31 @@ class BootstrapFormField extends FormField{
 		
 		// Add addon to input if exists
 		if( !empty($this->addonPre) || !empty($this->addonPost) ){
-			$inputStr = "<div class='input-group'>";
+			$preInputStr = "<div class='input-group'>";
+			$postInputStr = '';
 			
 			if( !empty($this->addonPre) ){
-				$inputStr .= "<div class='input-group-addon'>" . $this->addonPre . "</div>";
+				$preInputStr .= "<div class='input-group-addon'>" . $this->addonPre . "</div>";
 			}
-			
-			$inputStr .= $this->view();
 			
 			if( !empty($this->addonPost) ){
-				$inputStr .= "<div class='input-group-addon'>" . $this->addonPost . "</div>";
+				if( $this->isShowFeedback ){
+					/*
+						In order to make feedback icon show up correctly when there is addon post, we need to wrap the input and the icon together with a relative position div.
+					*/
+					$preInputStr .= "<div style='position:relative;'>";
+					$postInputStr .= "</div>";
+				}
+				
+				$postInputStr .= "<div class='input-group-addon'>" . $this->addonPost . "</div>";
 			}
 			
-			$inputStr .= "</div>";
+			$postInputStr .= "</div>";
+			
+			$inputStr = $preInputStr . $inputStr . $postInputStr;
 		}
 		
-		$str = "<div class='form-group'>
+		$str = "<div class='$formGroupClass'>
 			<label class='$labelClass' for='" . $this->id . "'>" . $this->label . "</label>
 			$inputStr
 		</div>";

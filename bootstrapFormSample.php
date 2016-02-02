@@ -10,7 +10,7 @@ error_reporting(E_ALL);
 <title>BootstrapForm sample</title>
 
 <link rel='stylesheet' href='/fwk/JavaScript/gnu/bootstrap-3.3.2/css/bootstrap.min.css' />
-
+<link rel='stylesheet' href='/fwk/JavaScript/gnu/bootstrap-3.3.2/css/bootstrap-custom.css' />
 <link rel='stylesheet' href='/fwk/css/gnu/animate/animate.min.css' />
 
 
@@ -31,7 +31,9 @@ error_reporting(E_ALL);
 			$form->addField( new \ui\BootstrapFormFieldHidden('txtItemId', '', 123) );
 			
 			// str
-			$form->addField( new \ui\BootstrapFormFieldText('txtItemStr', 'Name', 'Asthma Resource') );
+			$strField = new \ui\BootstrapFormFieldText('txtItemStr', 'Name', 'Asthma Resource');
+			$strField->validationStateSet(\ui\BootstrapFormField::VALIDATION_STATE_WARNING, true);
+			$form->addField( $strField );
 			
 			// strLong
 			$form->addField( new \ui\BootstrapFormFieldTextArea('taItemStrLong', 'Description') );
@@ -55,16 +57,20 @@ error_reporting(E_ALL);
 			// weight
 			$weightField = new \ui\BootstrapFormFieldText('txtWeight', 'Weight');
 			$weightField->addonPost = 'g';
+			$weightField->validationStateSet(\ui\BootstrapFormField::VALIDATION_STATE_SUCCESS);
+			$weightField->isShowFeedback = true;
 			$form->addField($weightField , $gridConfig );
 			
 			// width
 			$widthField = new \ui\BootstrapFormFieldText('txtWidth', 'Width');
 			$widthField->addonPost = 'cm';
+			$widthField->validationStateSet(\ui\BootstrapFormField::VALIDATION_STATE_WARNING);
 			$form->addField( $widthField, $gridConfig );
 			
 			// height
 			$heightField = new \ui\BootstrapFormFieldText('txtHeight', 'Height');
 			$heightField->addonPost = 'cm';
+			$heightField->validationStateSet(\ui\BootstrapFormField::VALIDATION_STATE_ERROR, true);
 			$form->addField( $heightField, $gridConfig );
 			
 			// length
