@@ -39,13 +39,16 @@ class BootstrapFormField extends FormField{
 	
 	public function viewBasic(){
 		$inputStr = $this->view();
+		if( $this->isShowFeedback ){
+			$inputStr .= $this->feedbackStrGet();
+		}
+		
 		$formGroupClass = 'form-group';
 		if( $this->validationState != self::VALIDATION_STATE_NONE ){
 			$formGroupClass .= " has-" . $this->validationState;
 			
 			if( $this->isShowFeedback ){
 				$formGroupClass .= " has-feedback";
-				$inputStr .= $this->feedbackStrGet();
 			}
 		}
 		
@@ -97,13 +100,16 @@ class BootstrapFormField extends FormField{
 		}
 		
 		$inputStr = $this->view();
+		if( $this->isShowFeedback ){
+			$inputStr .= $this->feedbackStrGet();
+		}
+		
 		$formGroupClass = 'form-group';
 		if( $this->validationState != self::VALIDATION_STATE_NONE ){
 			$formGroupClass .= " has-" . $this->validationState;
 			
 			if( $this->isShowFeedback ){
 				$formGroupClass .= " has-feedback";
-				$inputStr .= $this->feedbackStrGet();
 			}
 		}
 		
@@ -143,13 +149,16 @@ class BootstrapFormField extends FormField{
 	
 	public function viewInline($isShowLabel = false){
 		$inputStr = $this->view();
+		if( $this->isShowFeedback ){
+			$inputStr .= $this->feedbackStrGet();
+		}
+		
 		$formGroupClass = 'form-group';
 		if( $this->validationState != self::VALIDATION_STATE_NONE ){
 			$formGroupClass .= " has-" . $this->validationState;
 			
 			if( $this->isShowFeedback ){
 				$formGroupClass .= " has-feedback";
-				$inputStr .= $this->feedbackStrGet();
 			}
 		}
 		
