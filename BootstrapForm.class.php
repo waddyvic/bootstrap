@@ -23,6 +23,9 @@ Instance variables:
 - rows: array of form rows, each row contains 1 or more form fields
 - buttons: array of BootstrapFormFieldButton objects, typically the "Submit" and "Cancel" buttons.
 - isNewRow: flag to control whether new form field is added to a new row.
+- isShowLabel: whether to show or hide form field labels; can be overriden by individual form field
+- method: either POST or GET
+- action: form action, usually a URL
 - labelColConfig: BootstrapGridConfig object for horizontal form label column
 - fieldColConfig: BootstrapGridConfig object for horizontal form field column
 */
@@ -39,7 +42,7 @@ class BootstrapForm
 	protected $rows = array();
 	protected $buttons = array();
 	protected $isNewRow = true;
-	protected $isShowLabel = false;
+	protected $isShowLabel = true;
 	protected $method = self::POST;
 	protected $action = null;
 	public $labelColConfig = null;
@@ -98,7 +101,7 @@ class BootstrapForm
 	}
 	
 	public function methodSet($method){
-		if( !in_array($method, self::$allowedMethod) ){
+		if( !in_array($method, strtoupper(self::$allowedMethod)) ){
 			throw new \Exception("invalid method $method");
 		}
 		
@@ -146,7 +149,7 @@ class BootstrapForm
 		foreach($this->rows as $r){
 			switch($this->type){
 				case 'basic':
-					$str .= $r->viewBasic();
+					$str .= $r->viewBasic($this->isShowLabel);
 					break;
 				
 				case 'inline':

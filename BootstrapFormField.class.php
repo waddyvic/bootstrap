@@ -15,6 +15,7 @@ class BootstrapFormField extends FormField{
 	public $addonPre;
 	public $addonPost;
 	protected $validationState;
+	protected $isShowLabel = null;		// Override form's isShowLabel setting
 	public $isShowFeedback = false;
 	
 	protected function feedbackStrGet(){
@@ -23,6 +24,19 @@ class BootstrapFormField extends FormField{
 		<span class='glyphicon glyphicon-remove form-control-feedback' aria-hidden='true'></span>";
 		
 		return $feedbackStr;
+	}
+	
+	public function labelHide(){
+		$this->isShowLabel = false;
+	}
+	
+	// Remove label visibility override
+	public function labelVisibilityReset(){
+		$this->isShowLabel = null;
+	}
+	
+	public function labelShow(){
+		$this->isShowLabel = true;
 	}
 	
 	public function validationStateSet($validationState = self::VALIDATION_STATE_NONE, $isShowFeedback = false){
@@ -37,7 +51,7 @@ class BootstrapFormField extends FormField{
 		$this->isShowFeedback = ( $isShowFeedback == true );
 	}
 	
-	public function viewBasic(){
+	public function viewBasic($isShowLabel = true){
 		$inputStr = $this->view();
 		if( $this->isShowFeedback ){
 			$inputStr .= $this->feedbackStrGet();
@@ -50,6 +64,18 @@ class BootstrapFormField extends FormField{
 			if( $this->isShowFeedback ){
 				$formGroupClass .= " has-feedback";
 			}
+		}
+		
+		$labelClass = '';
+		// Check if form field has override isShowLabel setting of form
+		if( !is_null($this->isShowLabel) ){
+			if( !$this->isShowLabel ){
+				$labelClass = 'sr-only';
+			}
+		}
+		// If no override, follow form setting
+		else if( !$isShowLabel ){
+			$labelClass = 'sr-only';
 		}
 		
 		// Add addon to input if exists
@@ -79,7 +105,7 @@ class BootstrapFormField extends FormField{
 		}
 		
 		$str = "<div class='$formGroupClass'>
-			<label for='" . $this->id . "'>" . $this->label . "</label>
+			<label for='" . $this->id . "' class='$labelClass'>" . $this->label . "</label>
 			$inputStr
 		</div>";
 		
@@ -162,9 +188,15 @@ class BootstrapFormField extends FormField{
 			}
 		}
 		
-		// Make label screen reader only if not showing label
 		$labelClass = '';
-		if( !$isShowLabel ){
+		// Check if form field has override isShowLabel setting of form
+		if( !is_null($this->isShowLabel) ){
+			if( !$this->isShowLabel ){
+				$labelClass = 'sr-only';
+			}
+		}
+		// If no override, follow form setting
+		else if( !$isShowLabel ){
 			$labelClass = 'sr-only';
 		}
 		

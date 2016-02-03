@@ -19,18 +19,18 @@ class BootstrapFormRow{
 		$this->items[] = $item;
 	}
 	
-	public function viewBasic(){
+	public function viewBasic($isShowLabel = true){
 		$str = '';
 		
 		// If row contains only 1 item, print the item as is
 		if( count($this->items) == 1){
-			$str .= $this->items[0]->field->viewBasic();
+			$str .= $this->items[0]->field->viewBasic($isShowLabel);
 		}
 		else{
 			$str .= "<div class='row'>";
 			
 			foreach($this->items as $i){
-				$str .= "<div class='" . $i->gridConfig->toString() . "'>" . $i->field->viewBasic() . "</div>";
+				$str .= "<div class='" . $i->gridConfig->toString() . "'>" . $i->field->viewBasic($isShowLabel) . "</div>";
 			}
 			
 			$str .= "</div>";

@@ -26,6 +26,7 @@ error_reporting(E_ALL);
 			
 			<?php
 			$form = new \ui\BootstrapForm();
+			$form->labelHide();		// Globally hide labels
 			
 			// id
 			$form->addField( new \ui\BootstrapFormFieldHidden('txtItemId', '', 123) );
@@ -33,6 +34,7 @@ error_reporting(E_ALL);
 			// str
 			$strField = new \ui\BootstrapFormFieldText('txtItemStr', 'Name', 'Asthma Resource');
 			$strField->validationStateSet(\ui\BootstrapFormField::VALIDATION_STATE_WARNING, true);
+			$strField->labelShow();		// Override form setting to show label for this field particularly
 			$form->addField( $strField );
 			
 			// strLong
