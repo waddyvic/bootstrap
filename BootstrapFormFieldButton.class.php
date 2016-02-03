@@ -21,14 +21,14 @@ class BootstrapFormFieldButton extends BootstrapFormField{
 	/*
 	Override BootstrapFormField::viewBasic() function
 	*/
-	public function viewBasic(){
+	public function viewBasic($isShowLabel = true){
 		return $this->view() . ' ';
 	}
 	
 	/*
 	Override BootstrapFormField::viewHorizontal() function
 	*/
-	public function viewHorizontal($labelColConfig = null, $fieldColConfig = null ){
+	public function viewHorizontal($isShowLabel = true, $labelColConfig = null, $fieldColConfig = null ){
 		// Set default grid size if not provided
 		if( is_null($labelColConfig) ){
 			$labelColConfig = new BootstrapGridConfig('sm', 2);

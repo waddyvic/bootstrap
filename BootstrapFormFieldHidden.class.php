@@ -19,15 +19,16 @@ class BootstrapFormFieldHidden extends BootstrapFormField{
 	
 	/*
 	Override BootstrapFormField::viewBasic() function
+	$isShowLabel will be ignored
 	*/
-	public function viewBasic(){
+	public function viewBasic($isShowLabel = true){
 		return $this->view();
 	}
 	
 	/*
 	Override BootstrapFormField::viewHorizontal() function
 	*/
-	public function viewHorizontal($labelColConfig = null, $fieldColConfig = null){
+	public function viewHorizontal($isShowLabel = true, $labelColConfig = null, $fieldColConfig = null){
 		return $this->view();
 	}
 	

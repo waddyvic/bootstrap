@@ -116,7 +116,7 @@ class BootstrapFormField extends FormField{
 	@param labelColConfig: BootstrapGridSize object that specifies size for label column
 	@param fieldColConfig: BootstrapGridSize object that specifies size for field column
 	*/
-	public function viewHorizontal($labelColConfig = null, $fieldColConfig = null){
+	public function viewHorizontal($isShowLabel = true, $labelColConfig = null, $fieldColConfig = null){
 		// Set default grid size if not provided
 		if( is_null($labelColConfig) ){
 			$labelColConfig = new BootstrapGridConfig('sm', 2);
@@ -137,6 +137,11 @@ class BootstrapFormField extends FormField{
 			if( $this->isShowFeedback ){
 				$formGroupClass .= " has-feedback";
 			}
+		}
+		
+		// Check if form field has override isShowLabel setting of form
+		if( !is_null($this->isShowLabel) ){
+			$isShowLabel = $this->isShowLabel;
 		}
 		
 		// Add addon to input if exists
@@ -166,7 +171,7 @@ class BootstrapFormField extends FormField{
 		}
 		
 		$str = "<div class='$formGroupClass'>
-			<label for'" . $this->id . "' class='" . $labelColConfig->toString() . " control-label'>" . $this->label . "</label>
+			<label for'" . $this->id . "' class='" . $labelColConfig->toString() . " control-label'>" . ($isShowLabel ? $this->label : '') . "</label>
 			<div class='" . $fieldColConfig->toString() . "'>$inputStr</div>
 		</div>";
 		

@@ -41,9 +41,10 @@ class BootstrapFormFieldRadio extends BootstrapFormField{
 	
 	/*
 	Override BootstrapFormField default viewBasic().
+	Note that the function will ignore $isShowLabel, since radio buttons without a label is useless.
 	*/
-	public function viewBasic(){
-		$this->view();
+	public function viewBasic($isShowLabel = true){
+		return $this->view();
 	}
 	
 	/*

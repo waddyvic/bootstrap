@@ -157,7 +157,7 @@ class BootstrapForm
 					break;
 				
 				case 'horizontal':
-					$str .= $r->viewHorizontal($this->labelColConfig, $this->fieldColConfig);
+					$str .= $r->viewHorizontal($this->isShowLabel, $this->labelColConfig, $this->fieldColConfig);
 					break;
 				
 				default:

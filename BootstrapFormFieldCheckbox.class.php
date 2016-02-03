@@ -36,8 +36,9 @@ class BootstrapFormFieldCheckbox extends BootstrapFormField{
 	
 	/*
 	Override BootstrapFormField default viewBasic().
+	Note that this function will ignore $isShowLabel, b/c a checkbox without label is useless.
 	*/
-	public function viewBasic(){
+	public function viewBasic($isShowLabel = true){
 		return $this->view();
 	}
 	

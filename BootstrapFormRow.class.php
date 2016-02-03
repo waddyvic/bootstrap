@@ -39,11 +39,11 @@ class BootstrapFormRow{
 		return $str;
 	}
 	
-	public function viewHorizontal(){
+	public function viewHorizontal($isShowLabel = true){
 		$str = '';
 		
 		foreach($this->items as $i){
-			$str .= $i->field->viewHorizontal();
+			$str .= $i->field->viewHorizontal($isShowLabel);
 		}
 		
 		return $str;
