@@ -45,6 +45,7 @@ class BootstrapForm
 	protected $isShowLabel = true;
 	protected $method = self::POST;
 	protected $action = null;
+	public $additionalAttr = '';
 	public $labelColConfig = null;
 	public $fieldColConfig = null;
 	
@@ -144,7 +145,7 @@ class BootstrapForm
 			$formId = "id='" . $this->id . "'";
 		}
 		
-		$str = "<form $formClass $formId>";
+		$str = "<form $formClass $formId " . $this->additionalAttr . ">";
 		
 		foreach($this->rows as $r){
 			switch($this->type){
