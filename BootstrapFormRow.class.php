@@ -22,8 +22,8 @@ class BootstrapFormRow{
 	public function viewBasic($isShowLabel = true){
 		$str = '';
 		
-		// If row contains only 1 item, print the item as is
-		if( count($this->items) == 1){
+		// If row contains only 1 item, and the item does not have a grid config, print the item as is
+		if( count($this->items) == 1 && is_null($this->items[0]->gridConfig) ){
 			$str .= $this->items[0]->field->viewBasic($isShowLabel);
 		}
 		else{
