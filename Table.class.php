@@ -38,8 +38,10 @@ class Table{
 		$this->border = $bool;
 	}
 	
-	public function newCell($cellData, $id = null, $class = null){
+	public function newCell($cellData, $id = null, $class = null, $rowSpan = null, $colSpan = null){
 		$cell = new TableCell($cellData, TableCell::TD, $id, $class);
+		$cell->rowSpan = $rowSpan;
+		$cell->colSpan = $colSpan;
 		$this->currRow->cellAdd($cell);
 	}
 	
@@ -47,8 +49,10 @@ class Table{
 		$this->currRow->cellAdd($cell);
 	}
 	
-	public function newHeaderCell($cellData, $id = null, $class = null){
+	public function newHeaderCell($cellData, $id = null, $class = null, $rowSpan = null, $colSpan = null){
 		$cell = new TableCell($cellData, TableCell::TH, $id, $class);
+		$cell->rowSpan = $rowSpan;
+		$cell->colSpan = $colSpan;
 		$this->currRow->cellAdd($cell);
 	}
 	
