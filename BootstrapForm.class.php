@@ -34,6 +34,9 @@ class BootstrapForm
 {
 	const POST = 'POST';
 	const GET = 'GET';
+	const FORM_TYPE_BASIC = 'basic';
+	const FORM_TYPE_INLINE = 'inline';
+	const FORM_TYPE_HORIZONTAL = 'horizontal';
 	protected static $allowedMethods = array(self::POST, self::GET);
 	
 	protected $id;
@@ -49,7 +52,7 @@ class BootstrapForm
 	public $labelColConfig = null;
 	public $fieldColConfig = null;
 	
-	public function __construct($newType = 'basic', $newId = null){
+	public function __construct($newType = self::FORM_TYPE_BASIC, $newId = null){
 		$this->typeSet($newType);
 		$this->idSet($newId);
 	}
