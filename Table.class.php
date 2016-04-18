@@ -20,6 +20,31 @@ class Table{
 		$this->resetCurrRow();
 	}
 	
+	/*
+	Allow deep clone
+	*/
+	public function __clone(){
+		$newHeader = array();
+		foreach($this->header as $h){
+			$newHeader[] = clone $h;
+		}
+		$this->header = $newHeader;
+		
+		$newBody = array();
+		foreach($this->body as $b){
+			$newBody[] = clone $b;
+		}
+		$this->body = $newBody;
+		
+		$newFooter = array();
+		foreach($this->footer as $f){
+			$newFooter[] = clone $f;
+		}
+		$this->footer = $newFooter;
+		
+		$this->currRow = clone $this->currRow;
+	}
+	
 	public function classAdd($class){
 		// Do not add class if parameter is empty.
 		if( !empty($class) ){

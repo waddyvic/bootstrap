@@ -12,6 +12,17 @@ class TableRow{
 		$this->classAdd($class);
 	}
 	
+	/*
+	Allow deep cloning
+	*/
+	public function __clone(){
+		$newCells = array();
+		foreach($this->cells as $c){
+			$newCells[] = clone $c;
+		}
+		$this->cells = $newCells;
+	}
+	
 	public function cellAdd($cell){
 		$this->cells[] = $cell;
 	}
