@@ -8,6 +8,11 @@ This class extends BootstrapFormField class to implement view() function for but
 class BootstrapFormFieldButton extends BootstrapFormField{
 	public $type = 'button';
 	
+	public function __construct($id = null, $label = null, $value = null){
+		parent::__construct($id, $label, $value);
+		$this->addClass('btn');
+	}
+	
 	public function view(){
 		$str = "<button type='" . $this->type . "' ";
 		$str .= ( !empty($this->class) ? "class='" . implode(' ', $this->class) . "' " : "");

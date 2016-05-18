@@ -54,7 +54,13 @@ class FormField{
 	This function adds class to form field
 	*/
 	public function addClass($newClass){
-		$this->class[] = $newClass;
+		$classes = explode(' ', $newClass);
+		
+		foreach($classes as $c){
+			if( !in_array($c, $this->class) ){
+				$this->class[] = $c;
+			}
+		}		
 	}
 	
 	/*
