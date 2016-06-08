@@ -5,7 +5,7 @@ require_once(__DIR__ . '/BootstrapFormField.class.php');
 This class extends BootstrapFormField class to implement view() function for password input.
 */
 
-class FormFieldPassword extends BootstrapFormField{
+class BootstrapFormFieldPassword extends BootstrapFormField{
 	public function __construct($id = null, $label = null, $value = null){
 		$this->addClass('form-control');
 		
