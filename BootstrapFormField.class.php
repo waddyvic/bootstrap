@@ -17,6 +17,7 @@ class BootstrapFormField extends FormField{
 	protected $validationState;
 	protected $isShowLabel = null;		// Override form's isShowLabel setting
 	public $isShowFeedback = false;
+	public $helpText = null;
 	
 	protected function feedbackStrGet(){
 		$feedbackStr = "<span class='glyphicon glyphicon-ok form-control-feedback' aria-hidden='true'></span>
@@ -56,6 +57,7 @@ class BootstrapFormField extends FormField{
 		if( $this->isShowFeedback ){
 			$inputStr .= $this->feedbackStrGet();
 		}
+		$inputStr .= $this->viewHelpText();
 		
 		$formGroupClass = 'form-group';
 		if( $this->validationState != self::VALIDATION_STATE_NONE ){
@@ -112,6 +114,16 @@ class BootstrapFormField extends FormField{
 		return $str;
 	}
 	
+	public function viewHelpText(){
+		$str = null;
+		
+		if( strlen($this->helpText) > 0 ){
+			$str .= "<span id='" . $this->id . "HelpText' class='help-block'>" . $this->helpText . "</span>";
+		}
+		
+		return $str;
+	}
+	
 	/*
 	@param labelColConfig: BootstrapGridSize object that specifies size for label column
 	@param fieldColConfig: BootstrapGridSize object that specifies size for field column
@@ -129,6 +141,7 @@ class BootstrapFormField extends FormField{
 		if( $this->isShowFeedback ){
 			$inputStr .= $this->feedbackStrGet();
 		}
+		$inputStr .= $this->viewHelpText();
 		
 		$formGroupClass = 'form-group';
 		if( $this->validationState != self::VALIDATION_STATE_NONE ){

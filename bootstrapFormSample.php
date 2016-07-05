@@ -35,6 +35,7 @@ error_reporting(E_ALL);
 			$strField = new \ui\BootstrapFormFieldText('txtItemStr', 'Name', 'Asthma Resource');
 			$strField->validationStateSet(\ui\BootstrapFormField::VALIDATION_STATE_WARNING, true);
 			$strField->labelShow();		// Override form setting to show label for this field particularly
+			$strField->helpText = "A block of help text that breaks onto a new line and may extend beyond one line.";
 			$form->addField( $strField );
 			
 			// strLong

@@ -20,6 +20,7 @@ class BootstrapFormFieldText extends BootstrapFormField{
 		$str .= ( !empty($this->placeholder) ? "placeholder='" . $this->label . "' " : "");
 		$str .= ( !empty($this->style) ? "style='" . $this->style . "' " : "");
 		$str .= ( $this->isDisabled ? "disabled " : "" );
+		$str .= ( strlen($this->helpText) > 0 ? "aria-describedby='" . $this->id . "HelpText' " : "" );
 		$str .= ( !empty($this->additionalAttr) ? $this->additionalAttr . " " : "");
 		$str .= "/>";
 		
