@@ -8,16 +8,43 @@ This class extends BootstrapFormField class to implement view() function for but
 class BootstrapFormFieldButton extends BootstrapFormField{
 	public $type = 'button';
 	protected $isShowLabel = false;		// Default to hide label
+	protected $dataToggle = null;
+	protected $ariaPressed = null;
+	protected $autocomplete = null;
+	protected $isActive = null;
 	
 	public function __construct($id = null, $label = null, $value = null){
 		parent::__construct($id, $label, $value);
 		$this->addClass('btn');
 	}
 	
+	public function disableToggle(){
+		$this->isActive = null;
+		$this->dataToggle = null;
+		$this->ariaPressed = null;
+		$this->autocomplete = null;
+		$this->removeClass('active');
+	}
+	
+	public function enableToggle($isActive = false){
+		$this->isActive = ($isActive ? true : false);
+		$this->dataToggle = 'button';
+		$this->ariaPressed = $this->isActive;
+		$this->autocomplete = 'off';
+		if( $isActive ){
+			$this->addClass('active');
+		}
+	}
+	
 	public function view(){
 		$str = "<button type='" . $this->type . "' ";
 		$str .= ( !empty($this->class) ? "class='" . implode(' ', $this->class) . "' " : "");
 		$str .= ( !empty($this->id) ? "id='" . $this->id . "' name='" . $this->id . "' " : "");
+		$str .= ( !empty($this->dataToggle) ? "data-toggle='" . $this->dataToggle . "' " : "");
+		if( !is_null($this->ariaPressed) ) {
+			$str .= "aria-pressed='" . ( $this->ariaPressed === true ? "true" : "false") . "' ";
+		}
+		$str .= ( !empty($this->autocomplete) ? "autocomplete='" . $this->autocomplete . "' " : "");
 		$str .= ( !empty($this->additionalAttr) ? $this->additionalAttr . " " : "");
 		$str .= ">" . $this->label . "</button>";
 		

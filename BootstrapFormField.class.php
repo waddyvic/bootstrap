@@ -14,6 +14,7 @@ class BootstrapFormField extends FormField{
 	
 	public $addonPre;
 	public $addonPost;
+	public $isVisible = true;
 	protected $validationState;
 	protected $isShowLabel = null;		// Override form's isShowLabel setting
 	public $isShowFeedback = false;
@@ -106,7 +107,12 @@ class BootstrapFormField extends FormField{
 			$inputStr = $preInputStr . $inputStr . $postInputStr;
 		}
 		
-		$str = "<div class='$formGroupClass'>
+		$visibilityStr = '';
+		if( !$this->isVisible ){
+			$visibilityStr .= "style='display: none;'";
+		}
+		
+		$str = "<div class='$formGroupClass' " . $visibilityStr . ">
 			<label for='" . $this->id . "' class='$labelClass'>" . $this->label . "</label>
 			$inputStr
 		</div>";
@@ -183,7 +189,12 @@ class BootstrapFormField extends FormField{
 			$inputStr = $preInputStr . $inputStr . $postInputStr;
 		}
 		
-		$str = "<div class='$formGroupClass'>
+		$visibilityStr = '';
+		if( !$this->isVisible ){
+			$visibilityStr .= "style='display: none;'";
+		}
+		
+		$str = "<div class='$formGroupClass' " . $visibilityStr . ">
 			<label for'" . $this->id . "' class='" . $labelColConfig->toString() . " control-label'>" . ($isShowLabel ? $this->label : '') . "</label>
 			<div class='" . $fieldColConfig->toString() . "'>$inputStr</div>
 		</div>";

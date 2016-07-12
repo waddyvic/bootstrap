@@ -64,6 +64,15 @@ class FormField{
 	}
 	
 	/*
+	This function removes class from form field
+	*/
+	public function removeClass($classStr){
+		$classes = explode(' ', $classStr);
+		
+		$this->class = array_diff($this->class, $classes);
+	}
+	
+	/*
 	This function adds option to current form field.
 	*/
 	public function addOption($label, $value, $isSelected = false){
