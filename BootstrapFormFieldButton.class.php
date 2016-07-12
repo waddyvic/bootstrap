@@ -7,6 +7,7 @@ This class extends BootstrapFormField class to implement view() function for but
 
 class BootstrapFormFieldButton extends BootstrapFormField{
 	public $type = 'button';
+	protected $isShowLabel = false;		// Default to hide label
 	
 	public function __construct($id = null, $label = null, $value = null){
 		parent::__construct($id, $label, $value);
@@ -26,8 +27,8 @@ class BootstrapFormFieldButton extends BootstrapFormField{
 	/*
 	Override BootstrapFormField::viewBasic() function
 	*/
-	public function viewBasic($isShowLabel = true){
-		return $this->view() . ' ';
+	public function viewBasic($isShowLabel = false){
+		return parent::viewBasic($isShowLabel);
 	}
 	
 	/*
