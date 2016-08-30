@@ -195,7 +195,7 @@ class BootstrapFormField extends FormField{
 		}
 		
 		$str = "<div class='$formGroupClass' " . $visibilityStr . ">
-			<label for'" . $this->id . "' class='" . $labelColConfig->toString() . " control-label'>" . ($isShowLabel ? $this->label : '') . "</label>
+			<label for='" . $this->id . "' class='" . $labelColConfig->toString() . " control-label'>" . ($isShowLabel ? $this->label : '') . "</label>
 			<div class='" . $fieldColConfig->toString() . "'>$inputStr</div>
 		</div>";
 		
