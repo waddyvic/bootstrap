@@ -141,23 +141,29 @@ class Table{
 		
 		// Print table header if any
 		if( !empty($this->header) ){
+			$str .= "<thead>";
 			foreach($this->header as $h){
 				$str .= $h->view();
 			}
+			$str .= "</thead>";
 		}
 		
 		// Print table body if any
 		if( !empty($this->body) ){
+			$str .= "<tbody>";
 			foreach($this->body as $b){
 				$str .= $b->view();
 			}
+			$str .= "</tbody>";
 		}
 		
 		// Print table footer if any
 		if( !empty($this->footer) ){
+			$str .= "<tfoot>";
 			foreach($this->footer as $f){
 				$str .= $f->view();
 			}
+			$str .= "</tfoot>";
 		}
 		
 		$str .= "</table>";
