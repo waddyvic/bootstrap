@@ -105,7 +105,8 @@ class BootstrapForm
 	}
 	
 	public function methodSet($method){
-		if( !in_array($method, strtoupper(self::$allowedMethod)) ){
+		$method = strtoupper($method);
+		if( !in_array($method, self::$allowedMethods) ){
 			throw new \Exception("invalid method $method");
 		}
 		
@@ -147,8 +148,11 @@ class BootstrapForm
 		if( !empty($this->id) ){
 			$formId = "id='" . $this->id . "'";
 		}
-		
-		$str = "<form $formClass $formId " . $this->additionalAttr . ">";
+		$formAction = '';
+		if( !empty($this->action) ){
+			$formAction = "action='" . $this->action . "'";
+		}
+		$str = "<form $formClass $formId $formAction" . $this->additionalAttr . ">";
 		
 		foreach($this->rows as $r){
 			switch($this->type){
