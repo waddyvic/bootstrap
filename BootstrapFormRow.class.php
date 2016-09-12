@@ -39,11 +39,19 @@ class BootstrapFormRow{
 		return $str;
 	}
 	
-	public function viewHorizontal($isShowLabel = true){
+	public function viewHorizontal($isShowLabel = true, $labelColConfig = null, $fieldColConfig = null){
 		$str = '';
 		
+		// Set default grid size if not provided
+		if( is_null($labelColConfig) ){
+			$labelColConfig = new \ui\BootstrapGridConfig('sm', 2);
+		}
+		if( is_null($fieldColConfig) ){
+			$fieldColConfig = new \ui\BootstrapGridConfig('sm', 10);
+		}
+		
 		foreach($this->items as $i){
-			$str .= $i->field->viewHorizontal($isShowLabel);
+			$str .= $i->field->viewHorizontal($isShowLabel, $labelColConfig, $fieldColConfig);
 		}
 		
 		return $str;
