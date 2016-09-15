@@ -92,6 +92,25 @@ class BootstrapForm
 		return $this->id;
 	}
 	
+	// Return whether the form is empty
+	public function isEmpty(){
+		$isEmpty = true;
+		
+		// If no rows, return true
+		if( empty($this->rows) ){
+			return true;
+		}
+		
+		foreach($this->rows as $r){
+			if( !empty($r) ){
+				$isEmpty = false;
+				break;
+			}
+		}
+		
+		return $isEmpty;
+	}
+	
 	public function labelShow(){
 		$this->isShowLabel = true;
 	}

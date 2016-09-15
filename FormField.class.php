@@ -80,6 +80,13 @@ class FormField{
 	}
 	
 	/*
+	This function adds takes a FormFieldOption obj and add to current form field.
+	*/
+	public function addOptionObj($obj){
+		$this->options[] = $obj;
+	}
+	
+	/*
 	Child class must implement this function to return HTML of field.
 	*/
 	public function view(){
