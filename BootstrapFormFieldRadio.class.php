@@ -18,7 +18,7 @@ class BootstrapFormFieldRadio extends BootstrapFormField{
 			$inputStr .= ( !empty($this->style) ? "style='" . $this->style . "' " : "");
 			$inputStr .= ( $this->isDisabled ? "disabled " : "" );
 			$inputStr .= ( $o->isSelected ? "checked " : "" );
-			$inputStr .= ( !empty($this->additionalAttr) ? $this->additionalAttr . " " : "");
+			$inputStr .= ( !empty($o->additionalAttr) ? $o->additionalAttr . " " : "");
 			$inputStr .= "/> " . $o->label;
 			
 			if( $this->layout == 'stacked' ){
