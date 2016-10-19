@@ -194,7 +194,7 @@ class BootstrapForm
 		}
 		
 		// Print form buttons
-		$str .= $this->viewButtons();
+		//$str .= $this->viewButtons();
 		
 		$str .= "</form>";
 		return $str;
@@ -214,7 +214,7 @@ class BootstrapForm
 			if( $this->type == 'horizontal' ){
 				// Add offset to field column grid config
 				foreach($this->labelColConfig->getAllItemObjs() as $i){
-					$this->fieldColConfig->addItemObj( $i->getOffsetObj() );
+					//$this->fieldColConfig->addItemObj( $i->getOffsetObj() );
 				}
 				
 				$str .= "<div class='form-group'>
