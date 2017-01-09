@@ -194,7 +194,7 @@ class BootstrapForm
 		}
 		
 		// Print form buttons
-		//$str .= $this->viewButtons();
+		$str .= $this->viewButtons();
 		
 		$str .= "</form>";
 		return $str;
