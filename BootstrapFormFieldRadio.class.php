@@ -14,7 +14,7 @@ class BootstrapFormFieldRadio extends BootstrapFormField{
 		foreach($this->options as $o){
 			$inputStr = "<input type='radio' ";
 			$inputStr .= ( !empty($this->id) ? "name='" . $this->id . "' " : "");
-			$inputStr .= ( !empty($o->value) ? "value='" . $o->value . "' " : "");
+			$inputStr .= "value='" . $o->value . "' ";
 			$inputStr .= ( !empty($this->style) ? "style='" . $this->style . "' " : "");
 			$inputStr .= ( $this->isDisabled ? "disabled " : "" );
 			$inputStr .= ( $o->isSelected ? "checked " : "" );
