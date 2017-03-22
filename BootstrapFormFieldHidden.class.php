@@ -10,7 +10,7 @@ class BootstrapFormFieldHidden extends BootstrapFormField{
 		$str = "<input type='hidden' ";
 		$str .= ( !empty($this->class) ? "class='" . implode(' ', $this->class) . "' " : "");
 		$str .= ( !empty($this->id) ? "id='" . $this->id . "' name='" . $this->id . "' " : "");
-		$str .= ( !empty($this->value) ? "value='" . $this->value . "' " : "");
+		$str .= ( strlen($this->value) > 0 ? "value='" . $this->value . "' " : "");
 		$str .= ( !empty($this->additionalAttr) ? $this->additionalAttr . " " : "");
 		$str .= "/>";
 		
