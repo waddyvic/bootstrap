@@ -16,7 +16,7 @@ class BootstrapFormFieldText extends BootstrapFormField{
 		$str = "<input type='text' ";
 		$str .= ( !empty($this->class) ? "class='" . implode(' ', $this->class) . "' " : "");
 		$str .= ( !empty($this->id) ? "id='" . $this->id . "' name='" . $this->id . "' " : "");
-		$str .= ( !empty($this->value) ? "value='" . $this->value . "' " : "");
+		$str .= ( strlen($this->value) > 0 ? "value='" . $this->value . "' " : "");
 		$str .= ( !empty($this->placeholder) ? "placeholder='" . $this->label . "' " : "");
 		$str .= ( !empty($this->style) ? "style='" . $this->style . "' " : "");
 		$str .= ( $this->isDisabled ? "disabled " : "" );
