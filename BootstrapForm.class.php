@@ -213,9 +213,9 @@ class BootstrapForm
 			// Only print form-group divs for horizontal form
 			if( $this->type == 'horizontal' ){
 				// Add offset to field column grid config
-				foreach($this->labelColConfig->getAllItemObjs() as $i){
-					//$this->fieldColConfig->addItemObj( $i->getOffsetObj() );
-				}
+				//foreach($this->labelColConfig->getAllItemObjs() as $i){
+				//  $this->fieldColConfig->addItemObj( $i->getOffsetObj() );
+				//}
 				
 				$str .= "<div class='form-group'>
 					<div class='" . $this->fieldColConfig->toString() . "'>

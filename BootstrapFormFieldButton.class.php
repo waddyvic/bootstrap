@@ -64,20 +64,24 @@ class BootstrapFormFieldButton extends BootstrapFormField{
 	public function viewHorizontal($isShowLabel = true, $labelColConfig = null, $fieldColConfig = null ){
 		// Set default grid size if not provided
 		if( is_null($labelColConfig) ){
-			$labelColConfig = new BootstrapGridConfig('sm', 2);
+			$btnLabelColConfig = new BootstrapGridConfig('sm', 2);
+		} else {
+			$btnLabelColConfig = clone $labelColConfig;
 		}
 		if( is_null($fieldColConfig) ){
-			$fieldColConfig = new BootstrapGridConfig('sm', 10);
+			$btnFieldColConfig = new BootstrapGridConfig('sm', 10);
+		} else {
+			$btnFieldColConfig = clone $fieldColConfig;
 		}
 		
-		// Use lalel column grid size config to determine field column config
-		foreach($labelColConfig->getAllItemObjs() as $i){
+		// Use label column grid size config to determine field column config
+		foreach($btnLabelColConfig->getAllItemObjs() as $i){
 			$i->isOffset = true;
-			$fieldColConfig->addItemObj($i);
+			$btnFieldColConfig->addItemObj($i);
 		}
 		
 		$str = "<div class='form-group'>
-			<div class='" . $fieldColConfig->toString() . "'>" . $this->view() . "</div>
+			<div data-item='test' class='" . $btnFieldColConfig->toString() . "'>" . $this->view() . "</div>
 		</div>";
 		
 		return $str;
