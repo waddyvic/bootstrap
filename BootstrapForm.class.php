@@ -212,10 +212,16 @@ class BootstrapForm
 			
 			// Only print form-group divs for horizontal form
 			if( $this->type == 'horizontal' ){
-				// Add offset to field column grid config
-				//foreach($this->labelColConfig->getAllItemObjs() as $i){
-				//  $this->fieldColConfig->addItemObj( $i->getOffsetObj() );
-				//}
+				//Add offset to field column grid config.
+				/* 
+				 * This will suffer the same problem as ec277a75 but as buttons should
+				 * always be at the end it should not be a problem? Explicitly deep clone
+				 * if this becomes a problem.
+				 * http://git.lung/fwk/fwk/commit/ec277a7584d67d6b18d4f264a40939063d595858
+				 */
+				foreach($this->labelColConfig->getAllItemObjs() as $i){
+					$this->fieldColConfig->addItemObj( $i->getOffsetObj() );
+				}
 				
 				$str .= "<div class='form-group'>
 					<div class='" . $this->fieldColConfig->toString() . "'>
