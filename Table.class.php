@@ -89,6 +89,11 @@ class Table{
 		$this->currRow = new TableRow();
 	}
 	
+	// Add class to current row
+	public function rowClassAdd($class){
+		$this->currRow->classAdd($class);
+	}
+	
 	// Put current row into table header and start a new row
 	public function saveHeaderRow(){
 		if( !$this->currRow->isEmpty() ){
