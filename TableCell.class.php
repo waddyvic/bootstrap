@@ -13,7 +13,7 @@ class TableCell{
 	public $colSpan = null;
 	public $additionalAttr = null;
 	
-	public function __construct($cellData, $type = self::TD, $id = null, $class = null){
+	public function __construct($cellData = '', $type = self::TD, $id = null, $class = null){
 		$this->cellData = $cellData;
 		$this->typeSet($type);
 		$this->id = $id;
