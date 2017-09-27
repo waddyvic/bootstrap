@@ -8,6 +8,7 @@ require_once('BootstrapFormFieldEmail.class.php');
 require_once('BootstrapFormFieldNumber.class.php');
 require_once('BootstrapFormFieldPassword.class.php');
 require_once('BootstrapFormFieldRadio.class.php');
+require_once('BootstrapFormFieldSelect.class.php');
 require_once('BootstrapFormFieldStatic.class.php');
 require_once('BootstrapFormFieldText.class.php');
 require_once('BootstrapFormFieldTextArea.class.php');
