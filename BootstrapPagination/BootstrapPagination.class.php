@@ -181,6 +181,32 @@ class BootstrapPagination{
     }
 
     /*
+    Returns item after active item. Null if no next item, or no active item exist
+    */
+    public function itemGetNext(){
+        $prevItem = null;
+
+        if( !is_null($this->activeItemIndex) && $this->items->offsetExists($this->activeItemIndex + 1) ){
+            $prevItem = $this->items->offsetGet($this->activeItemIndex + 1);
+        }
+
+        return $prevItem;
+    }
+
+    /*
+    Returns item before active item. Null if no previous item, or no active item exist
+    */
+    public function itemGetPrev(){
+        $prevItem = null;
+
+        if( !is_null($this->activeItemIndex) && $this->items->offsetExists($this->activeItemIndex - 1) ){
+            $prevItem = $this->items->offsetGet($this->activeItemIndex - 1);
+        }
+
+        return $prevItem;
+    }
+
+    /*
     Add BootstrapPaginationItem object
     */
     public function itemObjPush($itemObj){
