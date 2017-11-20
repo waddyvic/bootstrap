@@ -144,6 +144,7 @@ class BootstrapPagination{
     public function createDefaultNav(){
         $this->navPrev = new BootstrapPaginationItemNav( BootstrapPaginationItemNav::LABEL_DEFAULT_PREV );
         $this->navNext = new BootstrapPaginationItemNav( BootstrapPaginationItemNav::LABEL_DEFAULT_NEXT );
+        $this->navUpdate();
     }
 
     public function idGet(){
@@ -174,6 +175,9 @@ class BootstrapPagination{
             }
             $this->items->next();
         }
+
+        // Auto enable/disable prev/next button when active item is the 1st/last item
+        $this->navUpdate();
     }
 
     /*
@@ -183,7 +187,13 @@ class BootstrapPagination{
         $validClass = 'ui\BootstrapPaginationItem';
         // Ensure object is an instance of the correct class
         if( is_a($itemObj, $validClass) && !is_subclass_of($itemObj, $validClass, false) ){
+            // Update active item if needed
+            if( $itemObj->isActive() ){
+                $this->activeItemDeactivate();
+            }
             $this->items->push($itemObj);
+            $this->activeItemIndex = $this->items->count() - 1;
+            $this->navUpdate();
         }
     }
 
@@ -195,12 +205,19 @@ class BootstrapPagination{
         $itemObj->urlSet($url);
         if( $isActive ){
             $itemObj->activate();
+            // Deactivate old active item
+            $this->activeItemDeactivate();
         }
         if( $isDisabled ){
             $itemObj->disable();
         }
 
         $this->items->push($itemObj);
+        if( $isActive ){
+            $this->activeItemIndex = $this->items->count() - 1;
+        }
+
+        $this->navUpdate();
     }
 
     public function itemObjGetActive(){
@@ -340,6 +357,48 @@ class BootstrapPagination{
         $this->navPrev->urlSet($url);
     }
 
+    /*
+    Auto enable/disable prev/next buttons based on current active item:
+    - If less than or equal to 1 item exist, both are disabled
+    - If active item is at the beginning, disable "prev" and enable "next"
+    - If active item is at the end, disable "next" and enable "prev"
+    - If active item is neigher at the beginning nor at the end, enable both "next" and "prev"
+    */
+    public function navUpdate(){
+        if( $this->items->count() <= 1 ){
+            if( !is_null($this->navPrev) ){
+                $this->navPrev->disable();
+            }
+            if( !is_null($this->navNext) ){
+                $this->navNext->disable();
+            }
+        }
+        else if( $this->activeItemIndex == 0 ){
+            if( !is_null($this->navPrev) ){
+                $this->navPrev->disable();
+            }
+            if( !is_null($this->navNext) ){
+                $this->navNext->enable();
+            }
+        }
+        else if( $this->activeItemIndex == $this->items->count() - 1 ){
+            if( !is_null($this->navPrev) ){
+                $this->navPrev->enable();
+            }
+            if( !is_null($this->navNext) ){
+                $this->navNext->disable();
+            }
+        }
+        else{
+            if( !is_null($this->navPrev) ){
+                $this->navPrev->enable();
+            }
+            if( !is_null($this->navNext) ){
+                $this->navNext->enable();
+            }
+        }
+    }
+
     public function numVisibleGet(){
         return $this->numVisible;
     }
@@ -385,7 +444,11 @@ class BootstrapPagination{
     public function view(){
         $str = '';
 
-        $str .= "<nav aria-label='" . $this->ariaLabelGet() . "'>";
+        $classStr = null;
+        if( !empty($this->classes) ){
+            $classStr = "class='" . implode(' ', $this->classes) . "'";
+        }
+        $str .= "<nav aria-label='" . $this->ariaLabelGet() . "' $classStr>";
         $str .= "<ul class='" . $this->typeGet() . "'>";
 
         // View prev button if available
