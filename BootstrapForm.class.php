@@ -161,7 +161,7 @@ class BootstrapForm
 		}
 	}
 	
-	public function view(){
+	public function view($viewBtns = true){
 		$formClass = '';
 		if( $this->type != 'basic' ){
 			$formClass = "class='form-" . $this->type . "'";
@@ -197,7 +197,7 @@ class BootstrapForm
 		}
 		
 		// Print form buttons
-		$str .= $this->viewButtons();
+		if( $viewBtns ) $str .= $this->viewButtons();
 		
 		$str .= "</form>";
 		return $str;
