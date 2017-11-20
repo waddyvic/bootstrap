@@ -150,4 +150,15 @@ class BootstrapPaginationItem{
 
         return $str;
     }
+
+    ///////////////////// static function ////////////////////
+
+    /*
+    Function to return an object to represent gap between items. This is useful when number of visible items are less than total number of items in the pagination.
+    */
+    public static function objGetGap($label = '...'){
+        $obj = new self($label);
+        $obj->disable();
+        return $obj;
+    }
 }

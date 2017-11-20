@@ -27,13 +27,13 @@ $pagination->navPrevSet('Prev', '/prev');
 for($i = 1; $i <= 6; $i++){
     $isActive = ($i == 3);
     $isDisabled = ($i % 2 == 0);
-    $pagination->itemAdd($i, '#', $isActive, $isDisabled);
+    $pagination->itemPush($i, '#', $isActive, $isDisabled);
 }
 
-print '<p>Add items using BootstrapPagination->itemAdd()</p>';
+print '<p>Add items using BootstrapPagination->itemPush()</p>';
 print $pagination->view();
 
-// Can use itemObjAdd() to add item
+// Can use itemObjPush() to add item
 for($i = 7; $i <= 12; $i++){
     $isDisabled = ($i % 3 == 0);
     
@@ -42,14 +42,26 @@ for($i = 7; $i <= 12; $i++){
     if( $isDisabled ){
         $itemObj->disable();
     }
-    $pagination->itemObjAdd($itemObj);
+    $pagination->itemObjPush($itemObj);
 }
 
-print '<p>Add items using BootstrapPagination->itemObjAdd()</p>';
+print '<p>Add items using BootstrapPagination->itemObjPush()</p>';
 print $pagination->view();
 
 print '<p>Change active item using label</p>';
 $pagination->itemActivateByLabel(10);
+print $pagination->view();
+
+print "<p>Limit visible items to 5</p>";
+$pagination->numVisibleSet(5);
+print $pagination->view();
+$pagination->itemActivateByLabel(3);
+print $pagination->view();
+
+print "<p>Visible items edge cases: even number, setting a number more than total num of items</p>";
+$pagination->numVisibleSet(4);
+print $pagination->view();
+$pagination->numVisibleSet(15);
 print $pagination->view();
 
 print "<p>View as Pager</p>";

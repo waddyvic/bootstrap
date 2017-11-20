@@ -42,46 +42,52 @@ class BootstrapPagination{
     // Pagination type
     protected $type = self::TYPE_DEFAULT;
 
-    // Pagination items, array of BootstrapPaginationItem objects
-    protected $items = array();
+    // Pagination items, doubly linked list of BootstrapPaginationItem objects
+    protected $items = null;
+
+    // Index of active item
+    protected $activeItemIndex = null;
     
     // Navigation items for going to previous/next page
     protected $navPrev = null;
     protected $navNext = null;
+
+    // Number of visible items if too long. 0 or null means unlimited
+    protected $numVisible = 0;
     
+
+    ///////////////////// Functions //////////////////////////
+
 	public function __construct($type = self::TYPE_DEFAULT, $size = self::SIZE_DEFAULT, $id = null, $class = null){
         $this->typeSet($type);
         $this->sizeSet($size);
         $this->idSet($id);
-		$this->classAdd($class);
+        $this->classAdd($class);
+        
+        // Initialize (doubly linked) list of items
+        $this->items = new \SplDoublyLinkedList();
 	}
     
+    public function activeItemIndexGet(){
+        return $this->activeItemIndex;
+    }
+
+    /*
+    Deactivate current active item
+    */
+    public function activeItemDeactivate(){
+        if( !is_null($this->activeItemIndex) && $this->items->offsetExists($this->activeItemIndex()) ){
+            $this->items->offsetSet($this->activeItemIndex, $this->items->offsetGet( $this->activeItemIndex)->deactivate() );
+            $this->activeItemIndex = null;
+        }
+    }
+
     public function ariaLabelGet(){
         return $this->ariaLabel;
     }
 
     public function ariaLabelSet($newAriaLabel){
         $this->ariaLabel = $newAriaLabel;
-    }
-
-    public function idGet(){
-        return $this->id;
-    }
-
-    public function idSet($newId){
-        $this->id = $newId;
-    }
-
-    public function itemActivateByLabel($label){
-        foreach($this->items as $i){
-            if( $i->isActive() && $i->labelGet() != $label ){
-                $i->deactivate();
-            }
-
-            if( $i->labelGet() == $label ){
-                $i->activate();
-            }
-        }
     }
 
     /*
@@ -140,10 +146,51 @@ class BootstrapPagination{
         $this->navNext = new BootstrapPaginationItemNav( BootstrapPaginationItemNav::LABEL_DEFAULT_NEXT );
     }
 
+    public function idGet(){
+        return $this->id;
+    }
+
+    public function idSet($newId){
+        $this->id = $newId;
+    }
+
+    public function itemActivateByLabel($label){
+        // Rewind list iterator to beginning
+        $this->items->rewind();
+
+        // Iterate through the list, deativate any old active item, and activate the new item
+        while( $this->items->valid() ){
+            $currItem = $this->items->current();
+            $currIndex = $this->items->key();
+            if( $currItem->isActive() && $currItem->labelGet() != $label ){
+                $currItem->deactivate();
+                $this->items->offsetSet($currIndex, $currItem);
+                $this->activeItemIndex = null;
+            }
+            else if( $currItem->labelGet() == $label ){
+                $currItem->activate();
+                $this->items->offsetSet($currIndex, $currItem);
+                $this->activeItemIndex = $currIndex;
+            }
+            $this->items->next();
+        }
+    }
+
     /*
-    Create new item in pagination
+    Add BootstrapPaginationItem object
     */
-    public function itemAdd($label, $url, $isActive = false, $isDisabled = false){
+    public function itemObjPush($itemObj){
+        $validClass = 'ui\BootstrapPaginationItem';
+        // Ensure object is an instance of the correct class
+        if( is_a($itemObj, $validClass) && !is_subclass_of($itemObj, $validClass, false) ){
+            $this->items->push($itemObj);
+        }
+    }
+
+    /*
+    Create new item at the end
+    */
+    public function itemPush($label, $url, $isActive = false, $isDisabled = false){
         $itemObj = new BootstrapPaginationItem($label);
         $itemObj->urlSet($url);
         if( $isActive ){
@@ -153,18 +200,98 @@ class BootstrapPagination{
             $itemObj->disable();
         }
 
-        $this->items[] = $itemObj;
+        $this->items->push($itemObj);
+    }
+
+    public function itemObjGetActive(){
+        $activeItem = null;
+        if( !is_null($this->activeItemIndex) && $this->items->offsetExists($this->activeItemIndex) ){
+            $activeItem = $this->items->offsetGet($this->activeItemIndex);
+        }
+
+        return $activeItem;
     }
 
     /*
-    Add BootstrapPaginationItem object
+    Return array of items visible in pagination
     */
-    public function itemObjAdd($itemObj){
-        $validClass = 'ui\BootstrapPaginationItem';
-        // Ensure object is an instance of the correct class
-        if( is_a($itemObj, $validClass) && !is_subclass_of($itemObj, $validClass, false) ){
-            $this->items[] = $itemObj;
+    public function itemObjsGetVisible(){
+        $visibleItems = new \SplDoublyLinkedList();
+
+        // If pagination is set to show everything (i.e. $this->numVisible == 0 or null), or total num of items is less than visible number of items set, return everything
+        if( is_null($this->numVisible) || $this->numVisible == 0 || $this->numVisible > count($this->items) ){
+            return $this->items;
         }
+
+        // Get active item index. If no item is active, treat 1st item as active (but don't activate it)
+        $activeIndex = ( is_null($this->activeItemIndex) ? 0 : $this->activeItemIndex );
+
+        // Calculate num of items to show before active item. We use intval() here to get whole integer if result is decimal.
+        $numBefore = intval( ($this->numVisible - 1) / 2);
+        // Calculate num of items to show after active item. Simple subtraction.
+        $numAfter = $this->numVisible - 1 - $numBefore;
+
+        // If there's not enough item to show before active item, shift them to after
+        if( $activeIndex < $numBefore ){
+            $numToShift = $numBefore - $activeIndex;
+            $numBefore -= $numToShift;
+            $numAfter += $numToShift;
+        }
+        // Else if there's not enough item to show after active item (i.e. active index + num after = index larger than last index), shift them to before
+        else if( ($activeIndex + $numAfter) > ( count($this->items) - 1 ) ){
+            // Actual number of items after active item
+            $numAfterActive = count($this->items) - 1 - $activeIndex;
+            $numToShift = $numAfter - $numAfterActive;
+            $numAfter -= $numToShift;
+            $numBefore += $numToShift;
+        }
+
+        // Construct the list
+        // First insert active item
+        $visibleItems->push( $this->items->offsetGet($activeIndex) );
+        // Then prepend items before active item if any
+        if( $numBefore > 0 ){
+            // Move iterator to active item first
+            $this->items->rewind();
+            while( $this->items->key() != $activeIndex ){
+                $this->items->next();
+            }
+            // Then iterate backward and prepend items to the visibleItems list
+            for($i = $numBefore; $i > 0 ; $i--){
+                $this->items->prev();
+                $visibleItems->unshift( $this->items->current() );
+            }
+            // Additionally, show gap item (i.e. "...") and the 1st item if the 1st visible item is not the 1st item.
+            if( $this->items->key() != 0 ){
+                // Add gap item
+                $visibleItems->unshift( \ui\BootstrapPaginationItem::objGetGap() );
+                // Add first item
+                $visibleItems->unshift( $this->items->bottom() );
+            }
+        }
+
+        // Finally append items after active item if any
+        if( $numAfter > 0 ){
+            // Move iterator to active item first
+            $this->items->rewind();
+            while( $this->items->key() != $activeIndex ){
+                $this->items->next();
+            }
+            // Then iterate backward and prepend items to the visibleItems list
+            for($i = $numAfter; $i > 0 ; $i--){
+                $this->items->next();
+                $visibleItems->push( $this->items->current() );
+            }
+            // Additionally, show gap item (i.e. "...") and the last item if the last visible item is not the last item.
+            if( $this->items->key() != $this->items->count() - 1 ){
+                // Add gap item
+                $visibleItems->push( \ui\BootstrapPaginationItem::objGetGap() );
+                // Add first item
+                $visibleItems->push( $this->items->top() );
+            }
+        }
+
+        return $visibleItems;
     }
 
     /*
@@ -213,6 +340,28 @@ class BootstrapPagination{
         $this->navPrev->urlSet($url);
     }
 
+    public function numVisibleGet(){
+        return $this->numVisible;
+    }
+
+    public function numVisibleSet($num){
+        // If input is integer
+        if( is_int($num) ){
+            $this->numVisible = $num;
+        }
+        // If input is not integer but numeric, take integer value
+        else if( is_numeric($num) ){
+            $this->numVisible = intval($num);
+        }
+
+        // Finally, use absolute value
+        $this->numVisible = abs($this->numVisible);
+    }
+
+    public function numVisibleUnset(){
+        $this->numVisible = 0;
+    }
+
     public function sizeGet(){
         return $this->size;
     }
@@ -249,10 +398,14 @@ class BootstrapPagination{
             }
         }
 
-        // VIew other pagination items if present, and type is pagination, not pager.
+        // View other pagination items if present, and type is pagination, not pager.
         if( !empty($this->items) && $this->typeGet() == self::TYPE_DEFAULT ){
-            foreach($this->items as $i){
-                $str .= $i->view();
+            $visibleItems = $this->itemObjsGetVisible();    // Array of visible items
+            
+            $visibleItems->rewind();
+            while( $visibleItems->valid() ){
+                $str .= $visibleItems->current()->view();
+                $visibleItems->next();
             }
         }
 
