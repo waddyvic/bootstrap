@@ -470,12 +470,19 @@ class BootstrapPagination{
     public function view(){
         $str = '';
 
-        $classStr = null;
+        $navClassStr = null;
         if( !empty($this->classes) ){
-            $classStr = "class='" . implode(' ', $this->classes) . "'";
+            $navClassStr = "class='" . implode(' ', $this->classes) . "'";
         }
-        $str .= "<nav aria-label='" . $this->ariaLabelGet() . "' $classStr>";
-        $str .= "<ul class='" . $this->typeGet() . "'>";
+        $str .= "<nav aria-label='" . $this->ariaLabelGet() . "' $navClassStr>";
+
+        $ulClasses = array();
+        $ulClasses[] = $this->typeGet();
+        if( $this->size != self::SIZE_DEFAULT ){
+            $ulClasses[] = $this->size;
+        }
+        $ulClassStr = implode(' ', $ulClasses);
+        $str .= "<ul class='$ulClassStr'>";
 
         // View prev button if available
         if( !is_null($this->navPrev) ){
