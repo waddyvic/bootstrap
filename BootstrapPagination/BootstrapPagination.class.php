@@ -385,6 +385,11 @@ class BootstrapPagination{
         $this->navPrev->urlSet($url);
     }
 
+    public function navUpdate(){
+        $this->navUpdateIsDisabled();
+        $this->navUpdateUrl();
+    }
+
     /*
     Auto enable/disable prev/next buttons based on pagination type and current active item:
     - If pagination type is pager, enable both next and previous buttons
@@ -394,7 +399,7 @@ class BootstrapPagination{
         * If active item is at the end, disable "next" and enable "prev"
         * If active item is neigher at the beginning nor at the end, enable both "next" and "prev"
     */
-    public function navUpdate(){
+    public function navUpdateIsDisabled(){
         $isPrevEnabled = true;
         $isNextEnabled = true;
         if( $this->type == self::TYPE_PAGER ){
@@ -435,6 +440,39 @@ class BootstrapPagination{
             else{
                 $this->navNext->disable();
             }
+        }
+    }
+
+    /*
+    Update prev/next url for pagination when active item is set/unset.
+    Note: this function only updates nav buttons for default type pagination. Nav buttons in pager will not be updated.
+
+    - If type is pager, do nothing
+    - If less than or equal to 1 item exist, do nothing
+    - If "prev" button exists, and active item has previous item, set "prev" button's url to previous item's url
+    - If "next" button exists, and active item has next item, set "next" button's url to next item's url
+    */
+    public function navUpdateUrl(){
+        if( $this->type == self::TYPE_PAGER ){
+            return false;
+        }
+
+        if( $this->items->count() <= 1 ){
+            return false;
+        }
+        else{
+            $activeItemIndex = ( is_null($this->activeItemIndex) ? 0 : $this->activeItemIndex );
+            // If has "prev" button, and current active item has previous item, set "prev" item's url to previous item's url
+            if( !is_null($this->navPrev) && $this->items->offsetExists($activeItemIndex - 1) ){
+                $this->navPrev->urlSet( $this->items->offsetGet($activeItemIndex - 1)->urlGet() );
+            }
+
+            // If has "next" button, and current active item has next item, set "next" item's url to next item's url
+            if( !is_null($this->navNext) && $this->items->offsetExists($activeItemIndex + 1) ){
+                $this->navNext->urlSet( $this->items->offsetGet($activeItemIndex + 1)->urlGet() );
+            }
+            
+            return true;
         }
     }
 
