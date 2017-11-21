@@ -159,6 +159,9 @@ class BootstrapPagination{
         // Rewind list iterator to beginning
         $this->items->rewind();
 
+        // Reset active item index first
+        $this->activeItemIndex = null;
+
         // Iterate through the list, deativate any old active item, and activate the new item
         while( $this->items->valid() ){
             $currItem = $this->items->current();
@@ -166,7 +169,6 @@ class BootstrapPagination{
             if( $currItem->isActive() && $currItem->labelGet() != $label ){
                 $currItem->deactivate();
                 $this->items->offsetSet($currIndex, $currItem);
-                $this->activeItemIndex = null;
             }
             else if( $currItem->labelGet() == $label ){
                 $currItem->activate();
@@ -384,43 +386,54 @@ class BootstrapPagination{
     }
 
     /*
-    Auto enable/disable prev/next buttons based on current active item:
-    - If less than or equal to 1 item exist, both are disabled
-    - If active item is at the beginning, disable "prev" and enable "next"
-    - If active item is at the end, disable "next" and enable "prev"
-    - If active item is neigher at the beginning nor at the end, enable both "next" and "prev"
+    Auto enable/disable prev/next buttons based on pagination type and current active item:
+    - If pagination type is pager, enable both next and previous buttons
+    - Otherwise:
+        * If less than or equal to 1 item exist, both are disabled
+        * If active item is at the beginning, disable "prev" and enable "next"
+        * If active item is at the end, disable "next" and enable "prev"
+        * If active item is neigher at the beginning nor at the end, enable both "next" and "prev"
     */
     public function navUpdate(){
-        if( $this->items->count() <= 1 ){
-            if( !is_null($this->navPrev) ){
-                $this->navPrev->disable();
-            }
-            if( !is_null($this->navNext) ){
-                $this->navNext->disable();
-            }
-        }
-        else if( $this->activeItemIndex == 0 ){
-            if( !is_null($this->navPrev) ){
-                $this->navPrev->disable();
-            }
-            if( !is_null($this->navNext) ){
-                $this->navNext->enable();
-            }
-        }
-        else if( $this->activeItemIndex == $this->items->count() - 1 ){
-            if( !is_null($this->navPrev) ){
-                $this->navPrev->enable();
-            }
-            if( !is_null($this->navNext) ){
-                $this->navNext->disable();
-            }
+        $isPrevEnabled = true;
+        $isNextEnabled = true;
+        if( $this->type == self::TYPE_PAGER ){
+            $isPrevEnabled = true;
+            $isNextEnabled = true;
         }
         else{
-            if( !is_null($this->navPrev) ){
+            if( $this->items->count() <= 1 ){
+                $isPrevEnabled = false;
+                $isNextEnabled = false;
+            }
+            else if( $this->activeItemIndex == 0 || is_null($this->activeItemIndex) ){
+                $isPrevEnabled = false;
+                $isNextEnabled = true;
+            }
+            else if( $this->activeItemIndex == $this->items->count() - 1 ){
+                $isPrevEnabled = true;
+                $isNextEnabled = false;
+            }
+            else{
+                $isPrevEnabled = true;
+                $isNextEnabled = true;
+            }
+        }
+
+        if( !is_null($this->navPrev) ){
+            if( $isPrevEnabled ){
                 $this->navPrev->enable();
             }
-            if( !is_null($this->navNext) ){
+            else{
+                $this->navPrev->disable();
+            }
+        }
+        if( !is_null($this->navNext) ){
+            if( $isNextEnabled ){
                 $this->navNext->enable();
+            }
+            else{
+                $this->navNext->disable();
             }
         }
     }
