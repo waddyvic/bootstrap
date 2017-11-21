@@ -6,6 +6,21 @@ This class extends BootstrapFormField class to implement view() function for but
 */
 
 class BootstrapFormFieldButton extends BootstrapFormField{
+	const BTN_STYLE_DANGER = 'btn-danger';
+	const BTN_STYLE_DEFAULT = 'btn-default';
+	const BTN_STYLE_INFO = 'btn-info';
+	const BTN_STYLE_LINK = 'btn-link';
+	const BTN_STYLE_PRIMARY = 'btn-primary';
+	const BTN_STYLE_SUCCESS = 'btn-success';
+	const VALID_BTN_STYLES = array(
+		self::BTN_STYLE_DANGER,
+		self::BTN_STYLE_DEFAULT,
+		self::BTN_STYLE_INFO,
+		self::BTN_STYLE_LINK,
+		self::BTN_STYLE_PRIMARY,
+		self::BTN_STYLE_SUCCESS,
+	);
+
 	public $type = 'button';
 	protected $isShowLabel = false;		// Default to hide label
 	protected $dataToggle = null;
@@ -16,6 +31,20 @@ class BootstrapFormFieldButton extends BootstrapFormField{
 	public function __construct($id = null, $label = null, $value = null){
 		parent::__construct($id, $label, $value);
 		$this->addClass('btn');
+	}
+
+	public function btnStyleSet($btnStyle = self::BTN_STYLE_DEFAULT){
+		if( !self::isValidBtnStyle($btnStyle) ){
+			return false;
+		}
+		
+		$this->addClass($btnStyle);
+		// Remove all other btn styles
+		foreach( self::VALID_BTN_STYLES as $s ){
+			if( $s != $btnStyle ){
+				$this->removeClass($s);
+			}
+		}
 	}
 	
 	public function disableToggle(){
@@ -92,5 +121,11 @@ class BootstrapFormFieldButton extends BootstrapFormField{
 	*/
 	public function viewInline($isShowLabel = false){
 		return $this->view() . ' ';
+	}
+
+	///////////////////// static functions ///////////////////////
+
+	public static function isValidBtnStyle($btnStyle){
+		return in_array( $btnStyle, self::VALID_BTN_STYLES );
 	}
 }

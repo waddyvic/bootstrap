@@ -1,6 +1,7 @@
 <?php
 namespace ui;
 require_once(__DIR__ . '/BootstrapFormField.class.php');
+require_once(__DIR__ . '/BootstrapFormFieldButton.class.php');  // Use button styles code in this class.
 /*
 This class extends BootstrapFormField class to implement view() function for button input.
 */
@@ -25,6 +26,54 @@ class BootstrapFormFieldAnchor extends BootstrapFormField{
 	public function __construct($id = null, $label = null, $value = null){
         parent::__construct($id, $label, $value);
 	}
+
+    // Clear all button styles
+    public function btnStyleClear(){
+        $this->removeClass('btn');
+        // Remove other btn styles
+        foreach(BootstrapFormFieldButton::VALID_BTN_STYLES as $s){
+            $this->removeClass($s);
+        }
+    }
+
+    // Set button style if the anchor type is button
+    public function btnStyleSet($btnStyle = BootstrapFormFieldButton::BTN_STYLE_DEFAULT){
+        if( $this->type != self::TYPE_BUTTON ){
+            return false;
+        }
+
+        if( !BootstrapFormFieldButton::isValidBtnStyle($btnStyle) ){
+            return false;
+        }
+
+        $this->addClass($btnStyle);
+        // Also add 'btn' just in case
+        $this->addClass('btn');
+
+        // Remove other btn styles
+        foreach(BootstrapFormFieldButton::VALID_BTN_STYLES as $s){
+            if( $s != $btnStyle ){
+                $this->removeClass($s);
+            }
+        }
+    }
+
+    /*
+    Returns if this anchor has any button styles
+    */
+    public function hasBtnStyle(){
+        $hasBtnStyle = false;
+
+        // Check if anchor has any valid button styles
+        foreach(BootstrapFormFieldButton::VALID_BTN_STYLES as $s){
+            if( in_array($s, $this->class) ){
+                $hasBtnStyle = true;
+                break;
+            }
+        }
+
+        return $hasBtnStyle;
+    }
 
     public function hrefGet(){
         return $this->href;
@@ -52,14 +101,14 @@ class BootstrapFormFieldAnchor extends BootstrapFormField{
         return $this->type;
     }
 
-    public function typeSet($type = self::TYPE_LINK){
+    public function typeSet($type = self::TYPE_LINK, $btnStyle = BootstrapFormFieldButton::BTN_STYLE_DEFAULT){
         if( self::isValidType($type) ){
             $this->type = $type;
             if( $type == self::TYPE_BUTTON ){
-                $this->addClass('btn btn-default');
+                $this->btnStyleSet($btnStyle);
             }
             else{
-                $this->removeClass('btn btn-default');
+                $this->btnStyleClear();
             }
 
             return true;
