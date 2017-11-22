@@ -24,9 +24,12 @@ class BootstrapFormFieldButton extends BootstrapFormField{
 	public $type = 'button';
 	protected $isShowLabel = false;		// Default to hide label
 	protected $dataToggle = null;
-	protected $ariaPressed = null;
+	protected $ariaPressed = null;		// Aria label for toggle
 	protected $autocomplete = null;
 	protected $isActive = null;
+
+	protected $dataTarget = null;		// Target for collapse functionality
+	protected $ariaExpanded = null;		// Aria label for collapse
 	
 	public function __construct($id = null, $label = null, $value = null){
 		parent::__construct($id, $label, $value);
@@ -47,6 +50,12 @@ class BootstrapFormFieldButton extends BootstrapFormField{
 		}
 	}
 	
+	public function disableCollapse(){
+		$this->dataToggle = null;
+		$this->dataTarget = null;
+		$this->ariaExpanded = null;
+	}
+	
 	public function disableToggle(){
 		$this->isActive = null;
 		$this->dataToggle = null;
@@ -55,7 +64,16 @@ class BootstrapFormFieldButton extends BootstrapFormField{
 		$this->removeClass('active');
 	}
 	
+	public function enableCollapse($target){
+		$this->disableToggle();
+		$this->dataToggle = 'collapse';
+		$this->dataTarget = $target;
+		$this->ariaExpanded = 'false';
+	}
+
 	public function enableToggle($isActive = false){
+		$this->disableCollapse;
+
 		$this->isActive = ($isActive ? true : false);
 		$this->dataToggle = 'button';
 		$this->ariaPressed = $this->isActive;
@@ -72,6 +90,10 @@ class BootstrapFormFieldButton extends BootstrapFormField{
 		$str .= ( !empty($this->dataToggle) ? "data-toggle='" . $this->dataToggle . "' " : "");
 		if( !is_null($this->ariaPressed) ) {
 			$str .= "aria-pressed='" . ( $this->ariaPressed === true ? "true" : "false") . "' ";
+		}
+		$str .= ( !empty($this->dataTarget) ? "data-target='" . $this->dataTarget . "' " : "");
+		if( !is_null($this->ariaExpanded) ){
+			$str .= "aria-expanded='" . $this->ariaExpanded . "' ";
 		}
 		$str .= ( !empty($this->autocomplete) ? "autocomplete='" . $this->autocomplete . "' " : "");
 		$str .= ( !empty($this->additionalAttr) ? $this->additionalAttr . " " : "");
