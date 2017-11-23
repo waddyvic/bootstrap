@@ -167,31 +167,30 @@ class BootstrapNavbar{
         $this->itemAdd($itemObj, $align);
     }
 
-    public function itemAddFormField($itemObj, $align = BootstrapNavbarItemGroup::ALIGN_NONE){
-        $validClass = 'ui\BootstrapNavbarItem';
-        // Ensure object is an instance of the correct class
-        if( is_a($itemObj, $validClass) ){
-            $varName = 'items';
-            switch($align){
-                case BootstrapNavbarItemGroup::ALIGN_LEFT:
-                    $varName .= 'Left';
-                    break;
-                
-                case BootstrapNavbarItemGroup::ALIGN_RIGHT:
-                $varName .= 'Right';
-                    break;
-            }
-
-            // Check if the item group is a form
-            if( $this->$varName->typeGet() != BootstrapNavbarItemGroup::TYPE_FORM ){
-                throw new \Exception("item group is not of type 'form'");
-            }
-
-            $this->$varName->itemAdd($itemObj);
+    public function itemAddFormField($formField, $align = BootstrapNavbarItemGroup::ALIGN_NONE){
+        $varName = 'items';
+        switch($align){
+            case BootstrapNavbarItemGroup::ALIGN_LEFT:
+                $varName .= 'Left';
+                break;
+            
+            case BootstrapNavbarItemGroup::ALIGN_RIGHT:
+            $varName .= 'Right';
+                break;
         }
-        else{
-            throw new \Exception("item provided not a $validClass object");
+
+        // If the item group is empty, change its type to form
+        if( $this->$varName->isEmpty() ){
+            $this->$varName->typeSet(BootstrapNavbarItemGroup::TYPE_FORM);
         }
+
+        // Check if the item group is a form
+        if( $this->$varName->typeGet() != BootstrapNavbarItemGroup::TYPE_FORM ){
+            throw new \Exception("item group is not of type 'form'");
+        }
+
+        $itemObj = new BootstrapNavbarItem($formField, BootstrapNavbarItem::TYPE_FORM_FIELD);
+        $this->$varName->itemAdd($itemObj);
     }
 
     public function positionGet(){

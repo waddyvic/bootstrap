@@ -119,9 +119,9 @@ class BootstrapNavbarItemGroup{
             case self::TYPE_FORM:
                 $this->addClass('navbar-form');
                 $classStr = implode(' ', $this->classes);
-                $str .= "<form class='$coassStr'>";
+                $str .= "<form class='$classStr'>";
                 foreach($this->items as $i){
-                    $str .= $i->view();
+                    $str .= $i->view() . ' ';
                 }
                 $str .= "</form>";
                 break;

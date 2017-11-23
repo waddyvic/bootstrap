@@ -83,12 +83,11 @@ class BootstrapNavbarItem{
                 break;
             
             case self::TYPE_TEXT:
-                $this->value->addClass($this->type);
-                $str = $this->value;
+                $str = "<p class='" . $this->type . "'>" . $this->value . "</p>";
                 break;
             
             case self::TYPE_FORM_FIELD:
-                $str = $this->value->viewInline();
+                $str = $this->value->viewInline(false);
                 break;
         }
 
