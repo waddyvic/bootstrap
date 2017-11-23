@@ -34,6 +34,7 @@ class BootstrapFormFieldButton extends BootstrapFormField{
 	public function __construct($id = null, $label = null, $value = null){
 		parent::__construct($id, $label, $value);
 		$this->addClass('btn');
+		$this->btnStyleSet();
 	}
 
 	public function btnStyleSet($btnStyle = self::BTN_STYLE_DEFAULT){

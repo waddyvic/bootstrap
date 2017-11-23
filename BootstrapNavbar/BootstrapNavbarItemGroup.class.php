@@ -5,7 +5,7 @@ This is a PHP wrapper for bootstrap 3 navbar item:
 https://getbootstrap.com/docs/3.3/components/#navbar
 */
 
-require_once(__DIR__ . "BootstrapNavbarItem.class.php");
+require_once(__DIR__ . "/BootstrapNavbarItem.class.php");
 
 class BootstrapNavbarItemGroup{
     const ALIGN_NONE = '';
@@ -33,7 +33,7 @@ class BootstrapNavbarItemGroup{
 
     public function __construct($type = self::TYPE_DEFAULT, $align = self::ALIGN_NONE){
         $this->typeSet($type);
-        $tyis->aignSet($align);
+        $this->alignSet($align);
     }
 
     /*
@@ -68,6 +68,10 @@ class BootstrapNavbarItemGroup{
         }
     }
 
+    public function isEmpty(){
+        return empty($this->items);
+    }
+
     public function itemAdd($item){
         $this->items[] = $item;
     }
@@ -85,16 +89,32 @@ class BootstrapNavbarItemGroup{
     public function view(){
         $str = null;
 
+        // Add alignment class
+        if( $this->align != self::ALIGN_NONE ){
+            $this->addClass($this->align);
+        }
+
         // Return string based on item type
         switch($this->type){
             case self::TYPE_DEFAULT:
                 $this->addClass('nav navbar-nav');
                 $classStr = implode(' ', $this->classes);
-                $str .= "<ul class='$classStr'>";
-                foreach($this->items as $i){
+                $isUlOpened = false;    // Indicate whether <ul> is opened
+                foreach($this->items as $k => $i){
+                    // If current item is not a button and no <ul> is opened, open one
+                    if( !$i->isButton() && !$isUlOpened ){
+                        $str .= "<ul class='$classStr'>";
+                        $isUlOpened = true;
+                    }
+
                     $str .= $i->view();
+                    
+                    // If no next item, or next item is button and <ul> is currently opened, close it
+                    if( $isUlOpened && ( !isset( $this->items[$k+1] ) || $this->items[$k+1]->isButton() ) ){
+                        $str .= "</ul>";
+                        $isUlOpened = false;
+                    }
                 }
-                $str .= "</ul>";
                 break;
             case self::TYPE_FORM:
                 $this->addClass('navbar-form');

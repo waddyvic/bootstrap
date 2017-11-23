@@ -1,12 +1,16 @@
 <?php
 namespace ui;
+
+use ui\BootstrapNavbarItemGroup;
+use ui\BootstrapNavbarItem;
+
 /*
 This is a PHP wrapper for bootstrap 3 navbar:
 https://getbootstrap.com/docs/3.3/components/#navbar
 */
 
-require_once(__DIR__ . "BootstrapNavbarItem.class.php");
-require_once(__DIR__ . "BootstrapNavbarItemGroup.class.php");
+require_once(__DIR__ . "/BootstrapNavbarItem.class.php");
+require_once(__DIR__ . "/BootstrapNavbarItemGroup.class.php");
 require_once(__DIR__ . "/../BootstrapFormFieldAnchor.class.php");
 require_once(__DIR__ . "/../BootstrapFormFieldButton.class.php");
 
@@ -62,6 +66,9 @@ class BootstrapNavbar{
         $this->idSet($id);
         $this->styleSet($style);
         $this->btnCollapseSet();
+        $this->items = new BootstrapNavbarItemGroup();
+        $this->itemsLeft = new BootstrapNavbarItemGroup(BootstrapNavbarItemGroup::TYPE_DEFAULT, BootstrapNavbarItemGroup::ALIGN_LEFT);
+        $this->itemsRight = new BootstrapNavbarItemGroup(BootstrapNavbarItemGroup::TYPE_DEFAULT, BootstrapNavbarItemGroup::ALIGN_RIGHT);
     }
 
     /*
@@ -92,13 +99,16 @@ class BootstrapNavbar{
     public function brandStrSet($str){
         if( is_null($this->brand) ){
             $this->brand = new \ui\BootstrapFormFieldAnchor();
+            $this->brand->addClass('navbar-brand');
         }
         $this->brand->label = $str;
+
     }
 
     public function brandUrlSet($url){
         if( is_null($this->brand) ){
             $this->brand = new \ui\BootstrapFormFieldAnchor();
+            $this->brand->addClass('navbar-brand');
         }
         $this->brand->hrefSet($url);
     }
@@ -116,6 +126,72 @@ class BootstrapNavbar{
 
     public function idSet($id){
         $this->id = $id;
+    }
+
+    public function itemAdd($itemObj, $align = BootstrapNavbarItemGroup::ALIGN_NONE){
+        $validClass = 'ui\BootstrapNavbarItem';
+        // Ensure object is an instance of the correct class
+        if( is_a($itemObj, $validClass) ){
+            $varName = 'items';
+            switch($align){
+                case BootstrapNavbarItemGroup::ALIGN_LEFT:
+                    $varName .= 'Left';
+                    break;
+                
+                case BootstrapNavbarItemGroup::ALIGN_RIGHT:
+                $varName .= 'Right';
+                    break;
+            }
+            $this->$varName->itemAdd($itemObj);
+        }
+    }
+
+    public function itemAddButton($label, $align = BootstrapNavbarItemGroup::ALIGN_NONE, $id = null){
+        $btn = new BootstrapFormFieldButton($id, $label);
+        if( $align != BootstrapNavbarItemGroup::ALIGN_NONE ){
+            $btn->addClass($align);
+        }
+        $itemObj = new BootstrapNavbarItem($btn, BootstrapNavbarItem::TYPE_BUTTON);
+        $this->itemAdd($itemObj, $align);
+    }
+
+    public function itemAddLink($label, $href, $align = BootstrapNavbarItemGroup::ALIGN_NONE, $id = null){
+        $link = new BootstrapFormFieldAnchor($id, $label);
+        $link->hrefSet($href);
+        $itemObj = new BootstrapNavbarItem($link);
+        $this->itemAdd($itemObj, $align);
+    }
+
+    public function itemAddText($str, $align = BootstrapNavbarItemGroup::ALIGN_NONE){
+        $itemObj = new BootstrapNavbarItem($str, BootstrapNavbarItem::TYPE_TEXT);
+        $this->itemAdd($itemObj, $align);
+    }
+
+    public function itemAddFormField($itemObj, $align = BootstrapNavbarItemGroup::ALIGN_NONE){
+        $validClass = 'ui\BootstrapNavbarItem';
+        // Ensure object is an instance of the correct class
+        if( is_a($itemObj, $validClass) ){
+            $varName = 'items';
+            switch($align){
+                case BootstrapNavbarItemGroup::ALIGN_LEFT:
+                    $varName .= 'Left';
+                    break;
+                
+                case BootstrapNavbarItemGroup::ALIGN_RIGHT:
+                $varName .= 'Right';
+                    break;
+            }
+
+            // Check if the item group is a form
+            if( $this->$varName->typeGet() != BootstrapNavbarItemGroup::TYPE_FORM ){
+                throw new \Exception("item group is not of type 'form'");
+            }
+
+            $this->$varName->itemAdd($itemObj);
+        }
+        else{
+            throw new \Exception("item provided not a $validClass object");
+        }
     }
 
     public function positionGet(){
