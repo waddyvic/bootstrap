@@ -39,7 +39,16 @@ $navbar->itemAddFormField($textField, BootstrapNavbarItemGroup::ALIGN_LEFT);
 $buttonField = new \ui\BootstrapFormFieldButton('btnSearch', 'Submit');
 $navbar->itemAddFormField($buttonField, BootstrapNavbarItemGroup::ALIGN_LEFT);
 
+print "<h3>Default Style</h3>";
 print $navbar->view();
+
+print "<h3>Inverted Style</h3>";
+$navbar->styleSet(BootstrapNavbar::STYLE_INVERTED);
+print $navbar->view();
+
+$navbar->positionSet(BootstrapNavbar::POSITION_FIXED_BOTTOM);
+print $navbar->view();
+
 ?>
 
 </div>

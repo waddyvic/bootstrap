@@ -17,17 +17,19 @@ require_once(__DIR__ . "/../BootstrapFormFieldButton.class.php");
 class BootstrapNavbar{
     // Constants for navbar style
     const STYLE_DEFAULT = 'navbar-default';
-    const STYLE_INVERTED = 'navbar-inverted';
+    const STYLE_INVERTED = 'navbar-inverse';
     const VALID_STYLES = array(
         self::STYLE_DEFAULT,
         self::STYLE_INVERTED,
     );
 
     // Constants for navbar positions
+    const POSITION_DEFAULT = '';
     const POSITION_FIXED_BOTTOM = 'navbar-fixed-bottom';
     const POSITION_FIXED_TOP = 'navbar-fixed-top';
     const POSITION_STATIC_TOP = 'navbar-static-top';
     const VALID_POSITIONS = array(
+        self::POSITION_DEFAULT,
         self::POSITION_FIXED_BOTTOM,
         self::POSITION_FIXED_TOP,
         self::POSITION_STATIC_TOP,
@@ -63,6 +65,7 @@ class BootstrapNavbar{
     Set a default ID so collapse button knows which container to collapse
     */
     public function __construct($id = 'myNavbar', $style = self::STYLE_DEFAULT){
+        $this->addClass('navbar');
         $this->idSet($id);
         $this->styleSet($style);
         $this->btnCollapseSet();
@@ -200,6 +203,15 @@ class BootstrapNavbar{
     public function positionSet($position){
         if( self::isValidPosition($position) ){
             $this->position = $position;
+            if( $position != self::POSITION_DEFAULT ){
+                $this->addClass($position);
+            }
+            
+            foreach(self::VALID_POSITIONS as $p){
+                if( $p != $position ){
+                    $this->removeClass($p);
+                }
+            }
         }
     }
 
@@ -210,14 +222,19 @@ class BootstrapNavbar{
     public function styleSet($style){
         if( self::isValidStyle($style) ){
             $this->style = $style;
+            $this->addClass($style);
+
+            foreach(self::VALID_STYLES as $s){
+                if( $s != $style ){
+                    $this->removeClass($s);
+                }
+            }
         }
     }
 
     public function view(){
         $str = "";
 
-        // Include navbar style in class string
-        $this->addClass($this->style);
         $str .= "<nav class='" . implode(' ', $this->classes) . "' id='" . $this->id . "'>";
         $str .= "<div class='container-fluid'>";
 
