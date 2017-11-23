@@ -30,7 +30,7 @@ $navbar->brandStrSet('<img src="/fwk/media/images/logos/logoLAEn.png" />');
 $navbar->brandUrlSet('/fwk/PHP/ui/BootstrapNavbar/demo.php');
 
 $navbar->itemAddLink('Link 1', '/link1');
-$navbar->itemAddLink('Link 2', '/link2');
+$navbar->itemAddLink('Link 2', '/link2', BootstrapNavbarItemGroup::ALIGN_NONE, true);
 $navbar->itemAddText('Text 3', BootstrapNavbarItemGroup::ALIGN_RIGHT);
 $navbar->itemAddButton('Button 4', BootstrapNavbarItemGroup::ALIGN_RIGHT);
 

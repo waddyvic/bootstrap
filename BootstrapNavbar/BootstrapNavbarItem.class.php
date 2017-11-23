@@ -32,6 +32,18 @@ class BootstrapNavbarItem{
         $this->typeSet($type);
     }
 
+    public function activate(){
+        $this->isActive = true;
+    }
+
+    public function deactivate(){
+        $this->isActive = false;
+    }
+
+    public function isActive(){
+        return $this->isActive;
+    }
+
     public function isButton(){
         return ($this->type == self::TYPE_BUTTON);
     }
@@ -58,6 +70,16 @@ class BootstrapNavbarItem{
         }
     }
 
+    public function urlGet(){
+        $url = null;
+
+        if( $this->isLink() ){
+            $url = $this->value->hrefGet();
+        }
+
+        return $url;
+    }
+
     public function view(){
         $str = null;
 
@@ -65,7 +87,8 @@ class BootstrapNavbarItem{
         switch($this->type){
             case self::TYPE_LINK:
                 if( empty($this->children) ){
-                    $str .= "<li>" . $this->value->view() . "</li>";
+                    $activeClass = ( $this->isActive() ? "class='active'" : '');
+                    $str .= "<li $activeClass>" . $this->value->view() . "</li>";
                 }
                 else{
                     $str .= "<li class='dropdown'>";

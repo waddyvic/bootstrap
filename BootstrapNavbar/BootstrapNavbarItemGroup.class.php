@@ -76,6 +76,10 @@ class BootstrapNavbarItemGroup{
         $this->items[] = $item;
     }
 
+    public function itemsGet(){
+        return $this->items;
+    }
+
     public function typeGet(){
         return $this->type;
     }

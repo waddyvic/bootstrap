@@ -158,10 +158,29 @@ class BootstrapNavbar{
         $this->itemAdd($itemObj, $align);
     }
 
-    public function itemAddLink($label, $href, $align = BootstrapNavbarItemGroup::ALIGN_NONE, $id = null){
+    public function itemAddLink($label, $href, $align = BootstrapNavbarItemGroup::ALIGN_NONE, $isActive = false, $id = null){
         $link = new BootstrapFormFieldAnchor($id, $label);
         $link->hrefSet($href);
         $itemObj = new BootstrapNavbarItem($link);
+        $itemObj->activate();
+        
+        // Find current active item and deactivate it.
+        foreach($this->items->itemsGet() as $i){
+            if( $i->isActive() ){
+                $i->deactivate();
+            }
+        }
+        foreach($this->itemsLeft->itemsGet() as $i){
+            if( $i->isActive() ){
+                $i->deactivate();
+            }
+        }
+        foreach($this->itemsRight->itemsGet() as $i){
+            if( $i->isActive() ){
+                $i->deactivate();
+            }
+        }
+
         $this->itemAdd($itemObj, $align);
     }
 
@@ -194,6 +213,69 @@ class BootstrapNavbar{
 
         $itemObj = new BootstrapNavbarItem($formField, BootstrapNavbarItem::TYPE_FORM_FIELD);
         $this->$varName->itemAdd($itemObj);
+    }
+
+    /*
+    Find and set active item by URL
+    */
+    public function itemSetActiveByUrl($url){
+        $oldActiveItem = null;
+        $newActiveItem = null;
+
+        // Deactivate current active item, and activate item that matches url
+        foreach($this->items->itemsGet() as $i){
+            // Skip if item is not a link
+            if( !$i->isLink() ){
+                continue;
+            }
+            
+            // If item is active and href doesn't match url
+            if( $i->isActive() && parse_url($i->urlGet(), PHP_URL_PATH) != $url ){
+                $i->deactivate();
+                $oldActiveItem = $i;
+            }
+            // If item href matches given url, activate it, unless another item with same url is already activated
+            else if( is_null($newActiveItem) && parse_url($i->urlGet(), PHP_URL_PATH) == $url ){
+                $i->activate();
+                $newActiveItem = $i;
+            }
+        }
+
+        foreach($this->itemsLeft->itemsGet() as $i){
+            // Skip if item is not a link
+            if( !$i->isLink() ){
+                continue;
+            }
+
+            // If item is active and href doesn't match url
+            if( $i->isActive() && parse_url($i->urlGet(), PHP_URL_PATH) != $url ){
+                $i->deactivate();
+                $oldActiveItem = $i;
+            }
+            // If item href matches given url, activate it, unless another item with same url is already activated
+            else if( is_null($newActiveItem) && parse_url($i->urlGet(), PHP_URL_PATH) == $url ){
+                $i->activate();
+                $newActiveItem = $i;
+            }
+        }
+
+        foreach($this->itemsRight->itemsGet() as $i){
+            // Skip if item is not a link
+            if( !$i->isLink() ){
+                continue;
+            }
+
+            // If item is active and href doesn't match url
+            if( $i->isActive() && parse_url($i->urlGet(), PHP_URL_PATH) != $url ){
+                $i->deactivate();
+                $oldActiveItem = $i;
+            }
+            // If item href matches given url, activate it, unless another item with same url is already activated
+            else if( is_null($newActiveItem) && parse_url($i->urlGet(), PHP_URL_PATH) == $url ){
+                $i->activate();
+                $newActiveItem = $i;
+            }
+        }
     }
 
     public function positionGet(){
