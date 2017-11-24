@@ -36,6 +36,41 @@ class BootstrapNavbarItem{
         $this->isActive = true;
     }
 
+    /*
+    Set currMenu param for links. The param will be uncoded into url component so no need to encode it before passing in.
+    */
+    public function currMenuSet($currMenu = null){
+        if( $this->isLink() ){
+            if( is_null($currMenu) ){
+                $currMenu = $this->value->label;
+            }
+
+            $currMenuStr = "currMenu=" . urlencode($currMenu);
+
+            $urlParsed = parse_url($this->urlGet());
+            $queryStr = '';
+            if( isset($urlParsed['query']) ){
+                $queryStr = $urlParsed['query'];
+            }
+            $query = explode('&', $queryStr);
+
+            if( strpos($queryStr, 'currMenu') === false) {
+                $query[] = $currMenuStr;
+            }
+            else{
+                foreach($query as $k => $q){
+                    if( strpos($q, 'currMenu') !== false ){
+                        $query[$k] = $currMenuStr;
+                    }
+                    break;
+                }
+            }
+
+            $urlParsed['query'] = implode('&', $query);
+            $this->value->hrefSet( \http_build_url($urlParsed) );
+        }
+    }
+
     public function deactivate(){
         $this->isActive = false;
     }
@@ -60,6 +95,23 @@ class BootstrapNavbarItem{
         return ($this->type == self::TYPE_TEXT);
     }
 
+    public function labelGet(){
+        $label = null;
+        switch($this->type){
+            case self::TYPE_BUTTON:
+            case self::TYPE_FORM_FIELD:
+            case self::TYPE_LINK:
+                $label = $this->value->label;
+                break;
+            
+            case self::TYPE_TEXT:
+                $label = $this->value;
+                break;
+        }
+
+        return $label;
+    }
+
     public function typeGet(){
         return $this->type;
     }
@@ -80,12 +132,16 @@ class BootstrapNavbarItem{
         return $url;
     }
 
-    public function view(){
+    public function view($isIncludeCurrMenu = true, $currMenu = null){
         $str = null;
 
         // Return string based on item type
         switch($this->type){
             case self::TYPE_LINK:
+                if( $isIncludeCurrMenu ){
+                    $this->currMenuSet($currMenu);
+                }
+
                 if( empty($this->children) ){
                     $activeClass = ( $this->isActive() ? "class='active'" : '');
                     $str .= "<li $activeClass>" . $this->value->view() . "</li>";

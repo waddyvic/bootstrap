@@ -13,6 +13,7 @@ require_once(__DIR__ . "/BootstrapNavbarItem.class.php");
 require_once(__DIR__ . "/BootstrapNavbarItemGroup.class.php");
 require_once(__DIR__ . "/../BootstrapFormFieldAnchor.class.php");
 require_once(__DIR__ . "/../BootstrapFormFieldButton.class.php");
+require_once(__DIR__ . "/../../gnu/http_build_url/1.0.1/src/http_build_url.php");
 
 class BootstrapNavbar{
     // Constants for navbar style
@@ -58,6 +59,9 @@ class BootstrapNavbar{
 
     // Navbar brand, a BootstrapFormFieldAnchor obj
     protected $brand = null;
+
+    // Flag to control navbar to produce currMenu query string in url
+    protected $isCurrMenuEnabled = false;
 
     /////////////////// functions /////////////////////////
 
@@ -121,6 +125,14 @@ class BootstrapNavbar{
             $btn = self::btnCollapseGetDefault($this->id);
         }
         $this->btnCollapse = $btn;
+    }
+
+    public function currMenuDisable(){
+        $this->isCurrMenuEnabled = false;
+    }
+
+    public function currMenuEnable(){
+        $this->isCurrMenuEnabled = true;
     }
 
     public function idGet(){
@@ -215,11 +227,66 @@ class BootstrapNavbar{
         $this->$varName->itemAdd($itemObj);
     }
 
+    public function itemSetActiveByLabel($label){
+        $newActiveItem = null;
+        
+        // Deactivate current active item, and activate item that matches url
+        foreach($this->items->itemsGet() as $i){
+            // Skip if item is not a link
+            if( !$i->isLink() ){
+                continue;
+            }
+            
+            // If item is active and href doesn't match url
+            if( $i->isActive() && $i->labelGet() != $label ){
+                $i->deactivate();
+            }
+            // If item href matches given url, activate it, unless another item with same url is already activated
+            else if( is_null($newActiveItem) && $i->labelGet() == $label ){
+                $i->activate();
+                $newActiveItem = $i;
+            }
+        }
+
+        foreach($this->itemsLeft->itemsGet() as $i){
+            // Skip if item is not a link
+            if( !$i->isLink() ){
+                continue;
+            }
+
+            // If item is active and href doesn't match url
+            if( $i->isActive() && $i->labelGet() != $label ){
+                $i->deactivate();
+            }
+            // If item href matches given url, activate it, unless another item with same url is already activated
+            else if( is_null($newActiveItem) && $i->labelGet() == $label ){
+                $i->activate();
+                $newActiveItem = $i;
+            }
+        }
+
+        foreach($this->itemsRight->itemsGet() as $i){
+            // Skip if item is not a link
+            if( !$i->isLink() ){
+                continue;
+            }
+
+            // If item is active and href doesn't match url
+            if( $i->isActive() && $i->labelGet() != $label ){
+                $i->deactivate();
+            }
+            // If item href matches given url, activate it, unless another item with same url is already activated
+            else if( is_null($newActiveItem) && $i->labelGet() == $label ){
+                $i->activate();
+                $newActiveItem = $i;
+            }
+        }
+    }
+
     /*
     Find and set active item by URL
     */
     public function itemSetActiveByUrl($url){
-        $oldActiveItem = null;
         $newActiveItem = null;
 
         // Deactivate current active item, and activate item that matches url
@@ -232,7 +299,6 @@ class BootstrapNavbar{
             // If item is active and href doesn't match url
             if( $i->isActive() && parse_url($i->urlGet(), PHP_URL_PATH) != $url ){
                 $i->deactivate();
-                $oldActiveItem = $i;
             }
             // If item href matches given url, activate it, unless another item with same url is already activated
             else if( is_null($newActiveItem) && parse_url($i->urlGet(), PHP_URL_PATH) == $url ){
@@ -250,7 +316,6 @@ class BootstrapNavbar{
             // If item is active and href doesn't match url
             if( $i->isActive() && parse_url($i->urlGet(), PHP_URL_PATH) != $url ){
                 $i->deactivate();
-                $oldActiveItem = $i;
             }
             // If item href matches given url, activate it, unless another item with same url is already activated
             else if( is_null($newActiveItem) && parse_url($i->urlGet(), PHP_URL_PATH) == $url ){
@@ -268,7 +333,6 @@ class BootstrapNavbar{
             // If item is active and href doesn't match url
             if( $i->isActive() && parse_url($i->urlGet(), PHP_URL_PATH) != $url ){
                 $i->deactivate();
-                $oldActiveItem = $i;
             }
             // If item href matches given url, activate it, unless another item with same url is already activated
             else if( is_null($newActiveItem) && parse_url($i->urlGet(), PHP_URL_PATH) == $url ){
