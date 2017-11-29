@@ -4,6 +4,7 @@ require_once('BootstrapGridConfig.class.php');
 require_once('BootstrapFormFieldAnchor.class.php');
 require_once('BootstrapFormFieldButton.class.php');
 require_once('BootstrapFormFieldCheckbox.class.php');
+require_once('BootstrapFormFieldDate.class.php');
 require_once('BootstrapFormFieldHidden.class.php');
 require_once('BootstrapFormFieldEmail.class.php');
 require_once('BootstrapFormFieldNumber.class.php');
@@ -13,6 +14,7 @@ require_once('BootstrapFormFieldSelect.class.php');
 require_once('BootstrapFormFieldStatic.class.php');
 require_once('BootstrapFormFieldText.class.php');
 require_once('BootstrapFormFieldTextArea.class.php');
+require_once('BootstrapFormFieldTime.class.php');
 require_once('BootstrapFormRow.class.php');
 /*
 This class creates an array of form fields and generate HTML form using Bootstrap 3.
