@@ -154,7 +154,7 @@ class BootstrapNavbar{
                     break;
                 
                 case BootstrapNavbarItemGroup::ALIGN_RIGHT:
-                $varName .= 'Right';
+                    $varName .= 'Right';
                     break;
             }
             $this->$varName->itemAdd($itemObj);
@@ -192,6 +192,18 @@ class BootstrapNavbar{
                 $i->deactivate();
             }
         }
+
+        $this->itemAdd($itemObj, $align);
+    }
+
+    public function itemAddLinkButton($label, $href, $align = BootstrapNavbarItemGroup::ALIGN_NONE, $isActive = false, $id = null){
+        $link = new BootstrapFormFieldAnchor($id, $label);
+        $link->hrefSet($href);
+        if( $align != BootstrapNavbarItemGroup::ALIGN_NONE ){
+            $link->addClass($align);
+        }
+        $link->addClass("btn btn-default");
+        $itemObj = new BootstrapNavbarItem($link, BootstrapNavbarItem::TYPE_BUTTON);
 
         $this->itemAdd($itemObj, $align);
     }
